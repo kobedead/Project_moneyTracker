@@ -9,6 +9,7 @@ import Tickets.Ticket;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class TicketFactory {
 
@@ -26,9 +27,9 @@ public class TicketFactory {
         //maybe make this a switch with the index (try to automate)
 
 
-        if(ticketKind == kindsOfTickets.get(0))
+        if(Objects.equals(ticketKind, kindsOfTickets.get(0)))
             return new AirplaneTicket(price , from , to) ;
-        else if (ticketKind == kindsOfTickets.get(1))
+        else if (Objects.equals(ticketKind, kindsOfTickets.get(1)))
             return new CinemaTicket(price,from ,to);
         else{
             System.out.println("faulty ticketType");

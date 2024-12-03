@@ -4,9 +4,7 @@ import Tickets.Ticket;
 
 import java.security.KeyPair;
 import java.security.KeyStore;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class TicketDatabase extends Database{
 
@@ -14,13 +12,33 @@ public class TicketDatabase extends Database{
 
     public TicketDatabase(){
         ticketList = new ArrayList<>();
+
     }
 
 
     public void addTicket(Ticket ticket) {
+
         support.firePropertyChange("TicketAdded" , null , ticket);
-        ticketList.add( ticket);
+        ticketList.add(ticket);
+
     }
+//TicketDeleted
+    public void removeTicket(Ticket ticket){
+
+        support.firePropertyChange("TicketDeleted" , null , ticket);
+        ticketList.remove(ticket);
+
+    }
+
+
+
+
+    public void CalculateDept(Person[] persons){
+
+    }
+
+
+
 
 
 

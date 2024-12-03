@@ -56,6 +56,8 @@ public class CreateTicketPanel extends JPanel {
         this.add(ticketPrice);
         this.add(this.SplitEqual);
         this.add(this.SplitDiff);
+
+
     }
 
     public void addCheckInButtonActionListener()
@@ -67,16 +69,16 @@ public class CreateTicketPanel extends JPanel {
 
             String ticketPriceEntered = ticketPrice.getText();
             String ticketType = possibleTickets.getSelectedValue();
-            Person personToPay =  personPanel.getSelectedPerson();
-            System.out.println(ticketPriceEntered);
-            System.out.println(ticketType);
-            System.out.println(personToPay);
+            Person personPayed =  personPanel.getSelectedPerson();
 
 
-            if(ticketPriceEntered != null && ticketType != null && personToPay != null){
+            if(ticketPriceEntered != null && ticketType != null && personPayed != null){
                 //ticket needs to be created
-                controller.AddTicket(factory.getTicket(ticketType , Double.parseDouble(ticketPriceEntered) , personToPay , null));
-
+                Object[] persons = personPanel.getAllPersons();
+                for (Object person :  persons) {
+                    if(person != personPayed)
+                        controller.AddTicket(factory.getTicket(ticketType , Double.parseDouble(ticketPriceEntered)/persons.length , (Person) person , personPayed));
+                }
         }
 
 
@@ -92,10 +94,9 @@ public class CreateTicketPanel extends JPanel {
             //make it here that an amount for every person needs to be typed , with '/' between them
             //the amount will get done from top to bottom of persons in list?????
 
-
             String[] ticketPriceEntered = ticketPrice.getText().split("/");
             String ticketType = possibleTickets.getSelectedValue();
-            Person personToPay =  personPanel.getSelectedPerson();
+            Person personPayed =  personPanel.getSelectedPerson();
 
             Object[] allPersons = personPanel.getAllPersons();
 
@@ -104,20 +105,13 @@ public class CreateTicketPanel extends JPanel {
 
                 for (int i = 0; i < allPersons.length; i++) {
 
-                    if (allPersons[i] != personToPay) {
+                    if (allPersons[i] != personPayed) {
 
-                        controller.AddTicket(factory.getTicket(ticketType, Double.parseDouble(ticketPriceEntered[i]), personToPay, (Person) allPersons[i]));
-
+                        controller.AddTicket(factory.getTicket(ticketType, Double.parseDouble(ticketPriceEntered[i]), (Person) allPersons[i] , personPayed));
 
                     }
-
-
-
                 }
-
             }
-
-
         });
     }
 

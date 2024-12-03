@@ -41,14 +41,12 @@ public class ViewFrame extends JFrame implements PropertyChangeListener
         this.setLayout(layout);
 
 
-        this.personController =  personController;
-
         this.ticketController = ticketController;
-
         this.personController = personController;
-        createPersonPanel = new CreatePersonPanel(personController );
 
-                                                                                    //not good
+
+        createPersonPanel = new CreatePersonPanel(personController );
+                                                                                    //dont like
         createTicketPanel = new CreateTicketPanel(ticketController , ticketFactory , createPersonPanel );
 
         displayTicketsPanel = new DisplayTicketsPanel();
