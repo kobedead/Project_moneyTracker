@@ -35,6 +35,10 @@ public class TicketDatabase extends Database{
 
     public void CalculateDept(Person[] persons){
 
+
+
+
+
     }
 
 

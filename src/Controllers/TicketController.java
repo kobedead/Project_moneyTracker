@@ -22,5 +22,9 @@ public class TicketController {
         ticketDatabade.addTicket(ticket);
     }
 
+    public void removeTicket(Ticket ticket){
+        ticketDatabade.removeTicket(ticket);
+    }
+
 
 }

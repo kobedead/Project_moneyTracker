@@ -1,0 +1,5 @@
+In CreateTicketPanel, you need selected person from CreatePersonPanel , and all created persons.
+Now  i just give CreatePersonPanel to CreateTicketPanel, but idk if thats bad practice
+
+So i made vieuwframe a listner for selectedPerson , but then i need to store this in CreateTicketPanel wich increases space of object
+if i just give CreatePersonPanel i dont increase pace that much cause its a refrence

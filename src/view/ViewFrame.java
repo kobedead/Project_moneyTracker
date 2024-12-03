@@ -11,20 +11,21 @@ import view.panels.DisplayTicketsPanel;
 import view.panels.CreateTicketPanel;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class ViewFrame extends JFrame implements PropertyChangeListener
+public class ViewFrame extends JFrame implements PropertyChangeListener , ListSelectionListener
 {
     // Get your controller in this private field
     PersonController personController;
-
     TicketController ticketController ;
+
 
     DisplayTicketsPanel displayTicketsPanel;
     CreateTicketPanel createTicketPanel;
-
     CreatePersonPanel createPersonPanel;
 
     public ViewFrame()
@@ -46,11 +47,13 @@ public class ViewFrame extends JFrame implements PropertyChangeListener
 
 
         createPersonPanel = new CreatePersonPanel(personController );
-                                                                                    //dont like
+        createPersonPanel.addSelectListLister(this);
+
+                                                                                        //dont like
         createTicketPanel = new CreateTicketPanel(ticketController , ticketFactory , createPersonPanel );
 
-        displayTicketsPanel = new DisplayTicketsPanel();
 
+        displayTicketsPanel = new DisplayTicketsPanel(ticketController);
 
 
 
@@ -69,6 +72,7 @@ public class ViewFrame extends JFrame implements PropertyChangeListener
         if ("PersonAdded".equals(evt.getPropertyName())) {
             //list person in create person panel
             createPersonPanel.addPersonDisp((Person) evt.getNewValue());
+
         }
         else if ("PersonDeleted".equals(evt.getPropertyName())) {
             //delist person in create person panel
@@ -86,11 +90,20 @@ public class ViewFrame extends JFrame implements PropertyChangeListener
         }
         else if ("TicketDeleted".equals(evt.getPropertyName())){
             //delete ticket from ticketdatabase panel
-
+            displayTicketsPanel.removeTicket((Ticket) evt.getNewValue());
         }
 
 
 
 
     }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        if (!e.getValueIsAdjusting()) {
+            System.out.println("Selected value updated");
+            createTicketPanel.setSelectedPerson(createPersonPanel.getSelectedPerson());
+
+
+    }}
 }
