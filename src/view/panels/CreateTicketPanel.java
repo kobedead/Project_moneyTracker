@@ -3,6 +3,7 @@ package view.panels;
 import Controllers.PersonController;
 import Controllers.TicketController;
 import Factory.TicketFactory;
+import Iterator.Iterator;
 import Person.Person;
 
 
@@ -16,8 +17,8 @@ public class CreateTicketPanel extends JPanel {
     // Get your controller in this private field
     private TicketController ticketController;
 
-    private Person selectedPerson; //could have just gotten this from personPanel, but idk bad practice
-    private CreatePersonPanel personPanel; //used to get all persons (bad practice?)
+    private Person selectedPerson;
+    private Iterator personIterator;
 
     private TicketFactory factory;
 
@@ -28,7 +29,7 @@ public class CreateTicketPanel extends JPanel {
 
 
     // Get your controller in this class via the constructor
-    public CreateTicketPanel(TicketController ticketController, TicketFactory factory , CreatePersonPanel createPersonPanel)
+    public CreateTicketPanel(TicketController ticketController, TicketFactory factory , Iterator personIterator)
     {
         this.ticketController = ticketController ;
         JLabel label = new JLabel("Registration buttons");
@@ -44,7 +45,7 @@ public class CreateTicketPanel extends JPanel {
 
         ticketPrice = new JTextField(10);
 
-        this.personPanel = createPersonPanel;
+        this.personIterator = personIterator;
 
         addCheckInButtonActionListener();
         addCheckOutButtonActionListener();
@@ -77,15 +78,17 @@ public class CreateTicketPanel extends JPanel {
 
             String ticketPriceEntered = ticketPrice.getText();
             String ticketType = possibleTickets.getSelectedValue();
-            Person personPayed =  selectedPerson;                   //personPanel.getSelectedPerson()
+            Person personPayed =  selectedPerson;
 
 
             if(ticketPriceEntered != null && ticketType != null && personPayed != null){
                 //ticket needs to be created
-                Object[] persons = personPanel.getAllPersons();
-                for (Object person :  persons) {
+
+                while (personIterator.hasNext()) {
+                    //System.out.println(personIterator.getIndex());
+                    Person person = (Person) personIterator.getElement();
                     if(person != personPayed)
-                        ticketController.AddTicket(factory.getTicket(ticketType , Double.parseDouble(ticketPriceEntered)/persons.length , (Person) person , personPayed));
+                        ticketController.add(factory.getTicket(ticketType , Double.parseDouble(ticketPriceEntered)/personIterator.getLenght() , (Person) person , personPayed));
                 }
         }
 
@@ -106,16 +109,14 @@ public class CreateTicketPanel extends JPanel {
             String ticketType = possibleTickets.getSelectedValue();
             Person personPayed =  selectedPerson;
 
-            Object[] allPersons = personPanel.getAllPersons();
 
+            if(ticketPriceEntered.length == personIterator.getLenght()) {
 
-            if(ticketPriceEntered.length == allPersons.length) {
+                while(personIterator.hasNext()){
+                    Person person = (Person) personIterator.getElement();
+                    if (person != personPayed) {
 
-                for (int i = 0; i < allPersons.length; i++) {
-
-                    if (allPersons[i] != personPayed) {
-
-                        ticketController.AddTicket(factory.getTicket(ticketType, Double.parseDouble(ticketPriceEntered[i]), (Person) allPersons[i] , personPayed));
+                        ticketController.add(factory.getTicket(ticketType, Double.parseDouble(ticketPriceEntered[personIterator.getIndex()]), person , personPayed));
 
                     }
                 }

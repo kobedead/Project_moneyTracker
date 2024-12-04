@@ -17,14 +17,14 @@ public abstract class Ticket {
 
     }
 
-    public String getHash(){
-        return from.getName()+to.getName();
-    }
 
     public Double getPrice(){
         return price;
     }
 
+    public Person getFrom(){return from;}
+
+    public Person getTo(){return to;}
 
 
     @Override

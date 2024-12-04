@@ -2,9 +2,10 @@ package Controllers;
 
 import Databases.Database;
 import Databases.PersonDatabase;
+import Iterator.Iterator;
 import Person.Person;
 
-public class PersonController {
+public class PersonController implements Controller<Person> {
 
     protected PersonDatabase db ;
 
@@ -14,13 +15,22 @@ public class PersonController {
     }
 
 
-    public void addPerson(Person person){
+    public Iterator CreateIterator(){
+        return db.createIterator();
+    }
 
-        db.addPerson(person);
+    @Override
+    public void add(Person person){
+
+        db.add(person);
 
 
     }
 
+    @Override
+    public void remove(Person person) {
+
+    }
 
 
 }

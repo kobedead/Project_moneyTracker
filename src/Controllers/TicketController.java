@@ -5,25 +5,25 @@ import Databases.TicketDatabase;
 import Person.Person;
 import Tickets.Ticket;
 
-public class TicketController {
+public class TicketController implements Controller<Ticket> {
 
-    protected TicketDatabase ticketDatabade ;
+    protected TicketDatabase ticketDatabase ;
 
     public TicketController(TicketDatabase database){
-        ticketDatabade = database ;
+        ticketDatabase = database ;
 
     }
 
 
 
 
-    public void AddTicket( Ticket ticket){
+    public void add( Ticket ticket){
 
-        ticketDatabade.addTicket(ticket);
+        ticketDatabase.add(ticket);
     }
 
-    public void removeTicket(Ticket ticket){
-        ticketDatabade.removeTicket(ticket);
+    public void remove(Ticket ticket){
+        ticketDatabase.remove(ticket);
     }
 
 

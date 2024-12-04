@@ -4,14 +4,15 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public abstract class Database
+public abstract class Database<T>
 {
 
 
 
-    protected static Map<Class<?>, Database> instance = new HashMap<>() ;
+    protected static Map<Class<?>, Database> instance = new HashMap<>() ;   //per class maar 1 datanbase (singleton)
 
     public final PropertyChangeSupport support;
 
@@ -57,6 +58,11 @@ public abstract class Database
     public void removeObserver(PropertyChangeListener listener) {
         support.removePropertyChangeListener(listener);
     }
+
+    public abstract void add(T object);
+    public abstract void remove(T object);
+
+
 
 
 }

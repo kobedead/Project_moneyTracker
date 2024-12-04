@@ -6,7 +6,7 @@ import java.security.KeyPair;
 import java.security.KeyStore;
 import java.util.*;
 
-public class TicketDatabase extends Database{
+public class TicketDatabase extends Database<Ticket>{
 
     private List<Ticket> ticketList ;
 
@@ -16,14 +16,14 @@ public class TicketDatabase extends Database{
     }
 
 
-    public void addTicket(Ticket ticket) {
+    public void add(Ticket ticket) {
 
         support.firePropertyChange("TicketAdded" , null , ticket);
         ticketList.add(ticket);
 
     }
 //TicketDeleted
-    public void removeTicket(Ticket ticket){
+    public void remove(Ticket ticket){
 
         support.firePropertyChange("TicketDeleted" , null , ticket);
         ticketList.remove(ticket);

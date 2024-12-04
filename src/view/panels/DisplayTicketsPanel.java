@@ -54,7 +54,7 @@ public class DisplayTicketsPanel extends JPanel {
     {
         this.removeButton.addActionListener(listener ->
         {
-            ticketController.removeTicket(entryJList.getSelectedValue());
+            ticketController.remove(entryJList.getSelectedValue());
 
         });
     }

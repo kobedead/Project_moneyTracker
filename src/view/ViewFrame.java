@@ -49,8 +49,8 @@ public class ViewFrame extends JFrame implements PropertyChangeListener , ListSe
         createPersonPanel = new CreatePersonPanel(personController );
         createPersonPanel.addSelectListLister(this);
 
-                                                                                        //dont like
-        createTicketPanel = new CreateTicketPanel(ticketController , ticketFactory , createPersonPanel );
+
+        createTicketPanel = new CreateTicketPanel(ticketController , ticketFactory , personController.CreateIterator() );
 
 
         displayTicketsPanel = new DisplayTicketsPanel(ticketController);

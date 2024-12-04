@@ -74,7 +74,7 @@ public class CreatePersonPanel extends JPanel {
 
             }
 
-            personController.addPerson(new Person(name));
+            personController.add(new Person(name));
 
         });
     }
