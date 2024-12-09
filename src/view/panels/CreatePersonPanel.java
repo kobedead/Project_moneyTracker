@@ -30,7 +30,7 @@ public class CreatePersonPanel extends JPanel {
         createPerson = new JButton("Create") ;
         removePerson = new JButton("Remove");
 
-        personName = new JTextField(10);
+        personName = new JTextField(15);
 
 
 
@@ -55,7 +55,7 @@ public class CreatePersonPanel extends JPanel {
         {
 
             String name = personName.getText();
-            personController.addPerson(new Person(name));
+            personController.addPerson(new Person(name, 0));
 
 
         });
@@ -81,8 +81,12 @@ public class CreatePersonPanel extends JPanel {
     public Person getSelectedPerson(){
         return createdPersonList.getSelectedValue();
     }
-    public Object[] getAllPersons(){
-        return createdPersonListModel.toArray();
+    public Person[] getAllPersons(){
+        Person[] persons = new Person[createdPersonListModel.size()];
+        for (int i = 0; i < createdPersonListModel.size(); i++) {
+            persons[i] = createdPersonListModel.get(i);
+        }
+        return persons;
     }
 
 

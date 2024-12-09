@@ -3,11 +3,12 @@ package Person;
 public class Person {
 
     protected String name ;
+    protected double balance;
 
 
-    public Person(String name ){
+    public Person(String name , double balance){
         this.name = name ;
-
+        this.balance = balance ;
 
     }
 
@@ -23,10 +24,14 @@ public class Person {
 
     @Override
     public  String toString(){
-
-        return String.format("Person , Name : %s" , name);
+        return String.format("Name: %s Balance : %.2f" , name, balance);
     }
 
+    public double getBalance() {
+        return balance;
+    }
 
-
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 }

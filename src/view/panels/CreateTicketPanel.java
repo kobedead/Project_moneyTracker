@@ -1,12 +1,13 @@
 package view.panels;
 
-import Controllers.PersonController;
+
 import Controllers.TicketController;
 import Factory.TicketFactory;
 import Person.Person;
 
 
 import javax.swing.*;
+import java.util.Objects;
 
 public class CreateTicketPanel extends JPanel {
 
@@ -60,32 +61,40 @@ public class CreateTicketPanel extends JPanel {
 
     }
 
-    public void addCheckInButtonActionListener()
-    {
-        this.SplitEqual.addActionListener(listener ->
-        {
-            // Insert here your controller functionality
-            //check that something is selected (selected != null)
-
+    public void addCheckInButtonActionListener() {
+        this.SplitEqual.addActionListener(listener -> {
             String ticketPriceEntered = ticketPrice.getText();
             String ticketType = possibleTickets.getSelectedValue();
-            Person personPayed =  personPanel.getSelectedPerson();
+            Person personPayed = personPanel.getSelectedPerson();
 
+            if (ticketPriceEntered != null && ticketType != null && personPayed != null) {
+                // Ticket needs to be created
+                Person[] persons = personPanel.getAllPersons();
+                double totalPrice = Double.parseDouble(ticketPriceEntered);
+                double amountPerPerson = totalPrice / persons.length;
+                personPayed.setBalance(totalPrice - amountPerPerson);
 
-            if(ticketPriceEntered != null && ticketType != null && personPayed != null){
-                //ticket needs to be created
-                Object[] persons = personPanel.getAllPersons();
-                for (Object person :  persons) {
-                    if(person != personPayed)
-                        controller.AddTicket(factory.getTicket(ticketType , Double.parseDouble(ticketPriceEntered)/persons.length , (Person) person , personPayed));
+                for (Person person : persons) {
+                    if (!Objects.equals(person.getName(), personPayed.getName())) {
+                        // Each person owes 'amountPerPerson' to the personPayed
+                        person.setBalance(person.getBalance() - amountPerPerson);
+                        System.out.println(person.getName() + " balance: " + person.getBalance());
+
+                        // Update the balance of personPayed incrementally
+                        personPayed.setBalance(personPayed.getBalance() - amountPerPerson);
+                        System.out.println(personPayed.getName() + " updated balance: " + personPayed.getBalance());
+
+                        // Add the ticket to the controller
+                        controller.AddTicket(factory.getTicket(ticketType, amountPerPerson, person, personPayed));
+
+                    }
                 }
-        }
-
-
-
-
+            }
         });
     }
+
+
+
 
     public void addCheckOutButtonActionListener()
     {
