@@ -1,9 +1,8 @@
 package Databases;
 import Person.Person;
+import Tickets.FinalTicket;
 import Tickets.Ticket;
 
-import java.security.KeyPair;
-import java.security.KeyStore;
 import java.util.*;
 
 
@@ -35,19 +34,19 @@ public class TicketDatabase extends Database<Ticket>{
 
 
 
-    public List<KeyPair> CalculateTotal(){
+    public List<Ticket> CalculateTotal(){
 
-        //List<Ticket>
-
-
-
+        List<Ticket> finalpay = new ArrayList<>();
         CustomDict<Person, Double> balances = new CustomDict<Person, Double>();
+
         for (Ticket ticket : ticketList){
             balances.put(ticket.getFrom(), -ticket.getPrice() );
             balances.put(ticket.getTo() , ticket.getPrice());
         }
 
         while(balances.keySet().size() != 0) {
+
+            System.out.println(finalpay);
 
             //use pairs!!!!!
             double largest = 0;
@@ -58,7 +57,6 @@ public class TicketDatabase extends Database<Ticket>{
 
 
             for (Person person : balances.keySet()) {
-                System.out.println(person + "     :    " + balances.get(person));
 
                 if(balances.get(person)>largest){
                     largestP = person;
@@ -70,18 +68,27 @@ public class TicketDatabase extends Database<Ticket>{
                 }
             }
 
-            if(smallest > 0 );
-
-
-
-
+            if(smallest == 0 )
+                return finalpay;
+            else if (Math.abs(smallest)< largest) {
+                finalpay.add(new FinalTicket(smallest , smallestP , largestP));
+                balances.put(largestP , -smallest);
+                balances.remove(smallestP);
+            }
+            else if (Math.abs(smallest) > largest) {
+                finalpay.add(new FinalTicket(largest , smallestP , largestP));
+                balances.remove(largestP);
+                balances.put(smallestP, +largest);
+            }
+            else if (Math.abs(smallest) == largest) {
+                finalpay.add(new FinalTicket(smallest , smallestP , largestP));
+                balances.remove(largestP);
+                balances.remove(smallestP);
+            }
 
         }
 
-
-
-
-        return null;
+        return finalpay;
     }
 
 

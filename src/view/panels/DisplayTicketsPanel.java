@@ -69,7 +69,8 @@ public class DisplayTicketsPanel extends JPanel {
     {
         this.calcTotal.addActionListener(listener ->
         {
-            ticketController.CalcTotal();
+            entryListModel.removeAllElements();
+            entryListModel.addAll(ticketController.CalcTotal());
 
         });
     }
