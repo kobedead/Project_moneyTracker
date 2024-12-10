@@ -6,6 +6,7 @@ import java.security.KeyPair;
 import java.security.KeyStore;
 import java.util.*;
 
+
 public class TicketDatabase extends Database<Ticket>{
 
     private List<Ticket> ticketList ;
@@ -14,6 +15,8 @@ public class TicketDatabase extends Database<Ticket>{
         ticketList = new ArrayList<>();
 
     }
+
+
 
 
     public void add(Ticket ticket) {
@@ -32,13 +35,53 @@ public class TicketDatabase extends Database<Ticket>{
 
 
 
+    public List<KeyPair> CalculateTotal(){
 
-    public void CalculateDept(Person[] persons){
-
-
-
+        //List<Ticket>
 
 
+
+        CustomDict<Person, Double> balances = new CustomDict<Person, Double>();
+        for (Ticket ticket : ticketList){
+            balances.put(ticket.getFrom(), -ticket.getPrice() );
+            balances.put(ticket.getTo() , ticket.getPrice());
+        }
+
+        while(balances.keySet().size() != 0) {
+
+            //use pairs!!!!!
+            double largest = 0;
+            Person largestP = null;
+
+            double smallest = 0 ;
+            Person smallestP = null ;
+
+
+            for (Person person : balances.keySet()) {
+                System.out.println(person + "     :    " + balances.get(person));
+
+                if(balances.get(person)>largest){
+                    largestP = person;
+                    largest = balances.get(person);
+                }
+                else if(balances.get(person)< smallest){
+                    smallestP = person;
+                    smallest = balances.get(person);
+                }
+            }
+
+            if(smallest > 0 );
+
+
+
+
+
+        }
+
+
+
+
+        return null;
     }
 
 

@@ -5,6 +5,9 @@ import Databases.TicketDatabase;
 import Person.Person;
 import Tickets.Ticket;
 
+import java.security.KeyPair;
+import java.util.List;
+
 public class TicketController implements Controller<Ticket> {
 
     protected TicketDatabase ticketDatabase ;
@@ -16,9 +19,12 @@ public class TicketController implements Controller<Ticket> {
 
 
 
+    public List<KeyPair> CalcTotal(){
+        return ticketDatabase.CalculateTotal();
+    }
+
 
     public void add( Ticket ticket){
-
         ticketDatabase.add(ticket);
     }
 

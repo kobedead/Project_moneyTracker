@@ -91,10 +91,6 @@ public class CreateTicketPanel extends JPanel {
                         ticketController.add(factory.getTicket(ticketType , Double.parseDouble(ticketPriceEntered)/personIterator.getLenght() , (Person) person , personPayed));
                 }
         }
-
-
-
-
         });
     }
 
@@ -116,7 +112,7 @@ public class CreateTicketPanel extends JPanel {
                     Person person = (Person) personIterator.getElement();
                     if (person != personPayed) {
 
-                        ticketController.add(factory.getTicket(ticketType, Double.parseDouble(ticketPriceEntered[personIterator.getIndex()]), person , personPayed));
+                        ticketController.add(factory.getTicket(ticketType, Double.parseDouble(ticketPriceEntered[personIterator.getIndex() -1 ]), person , personPayed));
 
                     }
                 }
