@@ -5,21 +5,31 @@ import Databases.TicketDatabase;
 import Person.Person;
 import Tickets.Ticket;
 
-public class TicketController {
+import java.security.KeyPair;
+import java.util.List;
 
-    protected TicketDatabase ticketDatabade ;
+public class TicketController implements Controller<Ticket> {
+
+    protected TicketDatabase ticketDatabase ;
 
     public TicketController(TicketDatabase database){
-        ticketDatabade = database ;
+        ticketDatabase = database ;
 
     }
 
 
 
+    public List<KeyPair> CalcTotal(){
+        return ticketDatabase.CalculateTotal();
+    }
 
-    public void AddTicket( Ticket ticket){
 
-        ticketDatabade.addTicket(ticket);
+    public void add( Ticket ticket){
+        ticketDatabase.add(ticket);
+    }
+
+    public void remove(Ticket ticket){
+        ticketDatabase.remove(ticket);
     }
 
 

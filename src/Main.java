@@ -14,6 +14,9 @@ public class Main {
         Database personDB = Database.getInstance(PersonDatabase.class);
         Database ticketDB = Database.getInstance(TicketDatabase.class);
 
+
+
+
         PersonController personCon = new PersonController((PersonDatabase) personDB);
         TicketController ticketCon = new TicketController((TicketDatabase) ticketDB);
 

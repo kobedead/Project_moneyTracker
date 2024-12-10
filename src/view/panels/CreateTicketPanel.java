@@ -3,6 +3,7 @@ package view.panels;
 import Controllers.PersonController;
 import Controllers.TicketController;
 import Factory.TicketFactory;
+import Iterator.Iterator;
 import Person.Person;
 
 
@@ -14,10 +15,10 @@ public class CreateTicketPanel extends JPanel {
     private JButton SplitDiff;
 
     // Get your controller in this private field
-    private TicketController controller;
+    private TicketController ticketController;
 
-    //to know wich person selected to bill to
-    private CreatePersonPanel personPanel;
+    private Person selectedPerson;
+    private Iterator personIterator;
 
     private TicketFactory factory;
 
@@ -28,9 +29,9 @@ public class CreateTicketPanel extends JPanel {
 
 
     // Get your controller in this class via the constructor
-    public CreateTicketPanel(TicketController controller, TicketFactory factory , CreatePersonPanel personPanel)
+    public CreateTicketPanel(TicketController ticketController, TicketFactory factory , Iterator personIterator)
     {
-        this.controller = controller ;
+        this.ticketController = ticketController ;
         JLabel label = new JLabel("Registration buttons");
         this.SplitEqual = new JButton("EqSplit");
         this.SplitDiff = new JButton("UnevenSplit");
@@ -44,7 +45,7 @@ public class CreateTicketPanel extends JPanel {
 
         ticketPrice = new JTextField(10);
 
-        this.personPanel = personPanel;
+        this.personIterator = personIterator;
 
         addCheckInButtonActionListener();
         addCheckOutButtonActionListener();
@@ -60,30 +61,36 @@ public class CreateTicketPanel extends JPanel {
 
     }
 
+
+    public void setSelectedPerson(Person person){
+        selectedPerson = person;
+
+    }
+
+
+
+
     public void addCheckInButtonActionListener()
     {
         this.SplitEqual.addActionListener(listener ->
         {
-            // Insert here your controller functionality
-            //check that something is selected (selected != null)
+
 
             String ticketPriceEntered = ticketPrice.getText();
             String ticketType = possibleTickets.getSelectedValue();
-            Person personPayed =  personPanel.getSelectedPerson();
+            Person personPayed =  selectedPerson;
 
 
             if(ticketPriceEntered != null && ticketType != null && personPayed != null){
                 //ticket needs to be created
-                Object[] persons = personPanel.getAllPersons();
-                for (Object person :  persons) {
+
+                while (personIterator.hasNext()) {
+                    //System.out.println(personIterator.getIndex());
+                    Person person = (Person) personIterator.getElement();
                     if(person != personPayed)
-                        controller.AddTicket(factory.getTicket(ticketType , Double.parseDouble(ticketPriceEntered)/persons.length , (Person) person , personPayed));
+                        ticketController.add(factory.getTicket(ticketType , Double.parseDouble(ticketPriceEntered)/personIterator.getLenght() , (Person) person , personPayed));
                 }
         }
-
-
-
-
         });
     }
 
@@ -96,18 +103,16 @@ public class CreateTicketPanel extends JPanel {
 
             String[] ticketPriceEntered = ticketPrice.getText().split("/");
             String ticketType = possibleTickets.getSelectedValue();
-            Person personPayed =  personPanel.getSelectedPerson();
-
-            Object[] allPersons = personPanel.getAllPersons();
+            Person personPayed =  selectedPerson;
 
 
-            if(ticketPriceEntered.length == allPersons.length) {
+            if(ticketPriceEntered.length == personIterator.getLenght()) {
 
-                for (int i = 0; i < allPersons.length; i++) {
+                while(personIterator.hasNext()){
+                    Person person = (Person) personIterator.getElement();
+                    if (person != personPayed) {
 
-                    if (allPersons[i] != personPayed) {
-
-                        controller.AddTicket(factory.getTicket(ticketType, Double.parseDouble(ticketPriceEntered[i]), (Person) allPersons[i] , personPayed));
+                        ticketController.add(factory.getTicket(ticketType, Double.parseDouble(ticketPriceEntered[personIterator.getIndex() -1 ]), person , personPayed));
 
                     }
                 }

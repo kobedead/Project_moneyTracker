@@ -5,6 +5,8 @@ import Person.Person;
 
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionListener;
+import java.util.Objects;
 
 public class CreatePersonPanel extends JPanel {
     private JList<Person> createdPersonList;
@@ -46,8 +48,12 @@ public class CreatePersonPanel extends JPanel {
         this.add(removePerson);
 
 
-
     }
+
+    public void addSelectListLister(ListSelectionListener listener){
+        this.createdPersonList.addListSelectionListener(listener);
+    }
+
 
 
     public void addcreateEmployeeButtonActionListener() {
@@ -55,8 +61,20 @@ public class CreatePersonPanel extends JPanel {
         {
 
             String name = personName.getText();
-            personController.addPerson(new Person(name));
 
+            //check how to cast whiole array to Person object
+            Object[] oPersons =  createdPersonListModel.toArray();
+
+
+            for (Object oPerson : oPersons ){
+                Person person = (Person) oPerson;                   //waste ig
+                if (Objects.equals(person.getName(), name)) {
+                    return;
+                }
+
+            }
+
+            personController.add(new Person(name));
 
         });
     }
@@ -66,7 +84,7 @@ public class CreatePersonPanel extends JPanel {
         this.removePerson.addActionListener(listener ->
         {
 
-
+            //only possible if person doesnt have ticket
 
         });
     }
