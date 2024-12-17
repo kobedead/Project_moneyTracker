@@ -23,6 +23,7 @@ public class CreateTicketPanel extends JPanel {
     private TicketFactory factory;
 
     private JTextField ticketPrice;
+    private JComboBox<String> typeDropdown;
 
     private JList<String> possibleTickets;
     private DefaultListModel<String> possibleTicketsModel;
@@ -40,6 +41,10 @@ public class CreateTicketPanel extends JPanel {
         possibleTickets = new JList<>(possibleTicketsModel);
         //list of possible tickets
         possibleTicketsModel.addAll(factory.getKindsOfTickets());
+        typeDropdown = new JComboBox<>();
+        for (String ticket: factory.getKindsOfTickets()){
+            typeDropdown.addItem(ticket);
+        }
 
         this.factory = factory;
 
@@ -53,7 +58,7 @@ public class CreateTicketPanel extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.add(label);
-        this.add(possibleTickets);
+        this.add(typeDropdown);
         this.add(ticketPrice);
         this.add(this.SplitEqual);
         this.add(this.SplitDiff);
@@ -77,7 +82,7 @@ public class CreateTicketPanel extends JPanel {
 
 
             String ticketPriceEntered = ticketPrice.getText();
-            String ticketType = possibleTickets.getSelectedValue();
+            String ticketType = (String) typeDropdown.getSelectedItem();
             Person personPayed =  selectedPerson;
 
 
@@ -102,7 +107,7 @@ public class CreateTicketPanel extends JPanel {
             //the amount will get done from top to bottom of persons in list?????
 
             String[] ticketPriceEntered = ticketPrice.getText().split("/");
-            String ticketType = possibleTickets.getSelectedValue();
+            String ticketType = (String) typeDropdown.getSelectedItem();
             Person personPayed =  selectedPerson;
 
 
@@ -111,7 +116,6 @@ public class CreateTicketPanel extends JPanel {
                 while(personIterator.hasNext()){
                     Person person = (Person) personIterator.getElement();
                     if (person != personPayed) {
-
                         ticketController.add(factory.getTicket(ticketType, Double.parseDouble(ticketPriceEntered[personIterator.getIndex() -1 ]), person , personPayed));
 
                     }

@@ -43,7 +43,6 @@ public class DisplayTicketsPanel extends JPanel {
         this.add(calcTotal);
 
 
-
     }
 
     public void addTicket(Ticket entry)
