@@ -1,12 +1,10 @@
 package Controllers;
 
-import Databases.Database;
 import Databases.TicketDatabase;
-import Person.Person;
 import Tickets.Ticket;
 
-import java.security.KeyPair;
 import java.util.List;
+import java.util.Set;
 
 public class TicketController implements Controller<Ticket> {
 
@@ -19,7 +17,7 @@ public class TicketController implements Controller<Ticket> {
 
 
 
-    public List<KeyPair> CalcTotal(){
+    public List<Ticket> CalcTotal(){
         return ticketDatabase.CalculateTotal();
     }
 
