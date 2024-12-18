@@ -70,7 +70,7 @@ public class CreatePersonPanel extends JPanel {
                 Person person = (Person) oPerson;                   //waste ig
                 if (Objects.equals(person.getName(), name)) {
                     return;
-                }
+               }
 
             }
 

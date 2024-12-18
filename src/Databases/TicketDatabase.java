@@ -4,7 +4,8 @@ import Tickets.FinalTicket;
 import Tickets.Ticket;
 
 import java.util.*;
-
+import Iterator.CustomIterator;
+import Iterator.TicketDBIterator;
 
 public class TicketDatabase extends Database<Ticket>{
 
@@ -15,7 +16,9 @@ public class TicketDatabase extends Database<Ticket>{
 
     }
 
-
+    public CustomIterator<Ticket> createIterator(){
+        return new TicketDBIterator(ticketList);
+    }
 
 
     public void add(Ticket ticket) {
@@ -37,16 +40,15 @@ public class TicketDatabase extends Database<Ticket>{
     public List<Ticket> CalculateTotal(){
 
         List<Ticket> finalpay = new ArrayList<>();
-        CustomDict<Person, Double> balances = new CustomDict<Person, Double>();
+        HashMap<Person, Double> balances = new HashMap<>();
 
         for (Ticket ticket : ticketList){
-            balances.put(ticket.getFrom(), -ticket.getPrice() );
-            balances.put(ticket.getTo() , ticket.getPrice());
+            balances.put(ticket.getFrom(), balances.getOrDefault(ticket.getFrom() , 0.0) -ticket.getPrice() );
+            balances.put(ticket.getTo() , balances.getOrDefault(ticket.getTo() , 0.0) + ticket.getPrice());
         }
 
-        while(balances.keySet().size() != 0) {
+        while(true) {
 
-            System.out.println(finalpay);
 
             //use pairs!!!!!
             double largest = 0;
@@ -54,7 +56,6 @@ public class TicketDatabase extends Database<Ticket>{
 
             double smallest = 0 ;
             Person smallestP = null ;
-
 
             for (Person person : balances.keySet()) {
 
@@ -70,25 +71,18 @@ public class TicketDatabase extends Database<Ticket>{
 
             if(smallest == 0 )
                 return finalpay;
-            else if (Math.abs(smallest)< largest) {
-                finalpay.add(new FinalTicket(smallest , smallestP , largestP));
-                balances.put(largestP , -smallest);
-                balances.remove(smallestP);
-            }
-            else if (Math.abs(smallest) > largest) {
-                finalpay.add(new FinalTicket(largest , smallestP , largestP));
-                balances.remove(largestP);
-                balances.put(smallestP, +largest);
-            }
-            else if (Math.abs(smallest) == largest) {
-                finalpay.add(new FinalTicket(smallest , smallestP , largestP));
-                balances.remove(largestP);
-                balances.remove(smallestP);
-            }
+
+
+            double payment  = Math.min(Math.abs(smallest) , largest);
+            finalpay.add(new FinalTicket(payment , smallestP , largestP));
+
+            balances.put(largestP , balances.get(largestP) - payment);
+            balances.put(smallestP , balances.get(smallestP) + payment);
+
+
 
         }
 
-        return finalpay;
     }
 
 

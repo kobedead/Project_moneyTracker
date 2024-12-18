@@ -1,13 +1,17 @@
 package view.panels;
 
-import Controllers.PersonController;
 import Controllers.TicketController;
 import Factory.TicketFactory;
-import Iterator.Iterator;
+import Iterator.CustomIterator;
 import Person.Person;
+import view.UnequalPayFrame;
 
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateTicketPanel extends JPanel {
 
@@ -17,8 +21,9 @@ public class CreateTicketPanel extends JPanel {
     // Get your controller in this private field
     private TicketController ticketController;
 
+    private UnequalPayFrame unequalPayFrame;
     private Person selectedPerson;
-    private Iterator personIterator;
+    private CustomIterator personCustomIterator;
 
     private TicketFactory factory;
 
@@ -27,9 +32,10 @@ public class CreateTicketPanel extends JPanel {
     private JList<String> possibleTickets;
     private DefaultListModel<String> possibleTicketsModel;
 
+    private List<String> prices;
 
     // Get your controller in this class via the constructor
-    public CreateTicketPanel(TicketController ticketController, TicketFactory factory , Iterator personIterator)
+    public CreateTicketPanel(TicketController ticketController, TicketFactory factory , CustomIterator personCustomIterator)
     {
         this.ticketController = ticketController ;
         JLabel label = new JLabel("Registration buttons");
@@ -38,6 +44,7 @@ public class CreateTicketPanel extends JPanel {
 
         possibleTicketsModel = new DefaultListModel<>();
         possibleTickets = new JList<>(possibleTicketsModel);
+
         //list of possible tickets
         possibleTicketsModel.addAll(factory.getKindsOfTickets());
 
@@ -45,10 +52,10 @@ public class CreateTicketPanel extends JPanel {
 
         ticketPrice = new JTextField(10);
 
-        this.personIterator = personIterator;
+        this.personCustomIterator = personCustomIterator;
 
-        addCheckInButtonActionListener();
-        addCheckOutButtonActionListener();
+        addSplitEqualButtonActionListener();
+        addSplitDiffButtonActionListener();
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -70,52 +77,49 @@ public class CreateTicketPanel extends JPanel {
 
 
 
-    public void addCheckInButtonActionListener()
+    public void addSplitEqualButtonActionListener()
     {
         this.SplitEqual.addActionListener(listener ->
         {
 
+                ticketController.addSplitEqual(possibleTickets.getSelectedValue()  , ticketPrice.getText() , selectedPerson );
 
-            String ticketPriceEntered = ticketPrice.getText();
-            String ticketType = possibleTickets.getSelectedValue();
-            Person personPayed =  selectedPerson;
-
-
-            if(ticketPriceEntered != null && ticketType != null && personPayed != null){
-                //ticket needs to be created
-
-                while (personIterator.hasNext()) {
-                    //System.out.println(personIterator.getIndex());
-                    Person person = (Person) personIterator.getElement();
-                    if(person != personPayed)
-                        ticketController.add(factory.getTicket(ticketType , Double.parseDouble(ticketPriceEntered)/personIterator.getLenght() , (Person) person , personPayed));
-                }
-        }
         });
     }
 
-    public void addCheckOutButtonActionListener()
+    public void addSplitDiffButtonActionListener()
     {
         this.SplitDiff.addActionListener(listener ->
         {
-            //make it here that an amount for every person needs to be typed , with '/' between them
-            //the amount will get done from top to bottom of persons in list?????
 
-            String[] ticketPriceEntered = ticketPrice.getText().split("/");
-            String ticketType = possibleTickets.getSelectedValue();
-            Person personPayed =  selectedPerson;
+            prices = new ArrayList<>();
 
+            //if person and ticketType selected -> create new panel
+            if(selectedPerson != null && possibleTickets.getSelectedValue() != null) {
+                //create new frame
+                UnequalPayFrame unequalPayFrame1 = new UnequalPayFrame();
+                //pass prices as refrence so it can get updated
+                unequalPayFrame1.Init(selectedPerson, personCustomIterator, prices);
 
-            if(ticketPriceEntered.length == personIterator.getLenght()) {
+                // Add a window listener
+                unequalPayFrame1.addWindowListener(new WindowAdapter() {
 
-                while(personIterator.hasNext()){
-                    Person person = (Person) personIterator.getElement();
-                    if (person != personPayed) {
-
-                        ticketController.add(factory.getTicket(ticketType, Double.parseDouble(ticketPriceEntered[personIterator.getIndex() -1 ]), person , personPayed));
+                    //for window disposed with button
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        ticketController.addSplitUnequal(possibleTickets.getSelectedValue(), prices, selectedPerson);
 
                     }
-                }
+
+                    //for window closed on x
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        ticketController.addSplitUnequal(possibleTickets.getSelectedValue(), prices, selectedPerson);
+
+                    }
+
+
+                });
             }
         });
     }

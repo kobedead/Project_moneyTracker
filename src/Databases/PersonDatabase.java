@@ -1,6 +1,6 @@
 package Databases;
 
-import Iterator.Iterator;
+import Iterator.CustomIterator;
 import Iterator.PersonDBIterator;
 import Person.Person;
 
@@ -16,7 +16,7 @@ public class PersonDatabase extends Database<Person> {
     }
 
 
-    public Iterator createIterator(){
+    public CustomIterator<Person> createIterator(){
         return new PersonDBIterator(personList);
     }
 

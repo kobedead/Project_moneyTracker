@@ -4,8 +4,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import Iterator.CustomIterator;
 
 public abstract class Database<T>
 {
@@ -45,8 +47,7 @@ public abstract class Database<T>
     }
 
 
-
-
+    public abstract CustomIterator<T> createIterator();
 
 
     // Add a property change listener

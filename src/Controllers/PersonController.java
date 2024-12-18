@@ -1,8 +1,7 @@
 package Controllers;
 
-import Databases.Database;
 import Databases.PersonDatabase;
-import Iterator.Iterator;
+import Iterator.CustomIterator;
 import Person.Person;
 
 public class PersonController implements Controller<Person> {
@@ -15,7 +14,7 @@ public class PersonController implements Controller<Person> {
     }
 
 
-    public  Iterator CreateIterator(){
+    public CustomIterator CreateIterator(){
         return db.createIterator();
     }
 
@@ -23,7 +22,6 @@ public class PersonController implements Controller<Person> {
     public void add(Person person){
 
         db.add(person);
-
 
     }
 

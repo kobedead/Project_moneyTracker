@@ -35,7 +35,7 @@ public class ViewFrame extends JFrame implements PropertyChangeListener , ListSe
 
     public void initialize(PersonController personController, TicketController ticketController , TicketFactory ticketFactory)
     {
-        this.setSize(700, 400);
+        this.setSize(900, 400);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         GridBagLayout layout = new GridBagLayout();
