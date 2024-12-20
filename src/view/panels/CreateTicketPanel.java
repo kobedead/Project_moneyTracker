@@ -1,10 +1,10 @@
 package view.panels;
 
-import Controllers.PersonController;
 import Controllers.TicketController;
 import Factory.TicketFactory;
 import Iterator.Iterator;
 import Person.Person;
+import Tickets.Ticket;
 
 
 import javax.swing.*;
@@ -27,6 +27,7 @@ public class CreateTicketPanel extends JPanel {
 
     private JList<String> possibleTickets;
     private DefaultListModel<String> possibleTicketsModel;
+    private boolean panel = false;
 
 
     // Get your controller in this class via the constructor
@@ -68,7 +69,7 @@ public class CreateTicketPanel extends JPanel {
 
 
     public void setSelectedPerson(Person person){
-        selectedPerson = person;
+        this.selectedPerson = person;
 
     }
 
@@ -99,30 +100,33 @@ public class CreateTicketPanel extends JPanel {
         });
     }
 
-    public void addCheckOutButtonActionListener()
+    public boolean addCheckOutButtonActionListener()
     {
         this.SplitDiff.addActionListener(listener ->
         {
-            //make it here that an amount for every person needs to be typed , with '/' between them
-            //the amount will get done from top to bottom of persons in list?????
-
-            String[] ticketPriceEntered = ticketPrice.getText().split("/");
-            String ticketType = (String) typeDropdown.getSelectedItem();
-            Person personPayed =  selectedPerson;
-
-
-            if(ticketPriceEntered.length == personIterator.getLenght()) {
-
-                while(personIterator.hasNext()){
-                    Person person = (Person) personIterator.getElement();
-                    if (person != personPayed) {
-                        ticketController.add(factory.getTicket(ticketType, Double.parseDouble(ticketPriceEntered[personIterator.getIndex() -1 ]), person , personPayed));
-
-                    }
-                }
-            }
-        });
+            panel = true;
+//            //make it here that an amount for every person needs to be typed , with '/' between them
+//            //the amount will get done from top to bottom of persons in list?????
+//
+//            String[] ticketPriceEntered = ticketPrice.getText().split("/");
+//            String ticketType = (String) typeDropdown.getSelectedItem();
+//            Person personPayed =  selectedPerson;
+//
+//
+//            if(ticketPriceEntered.length == personIterator.getLenght()) {
+//
+//                while(personIterator.hasNext()){
+//                    Person person = (Person) personIterator.getElement();
+//                    if (person != personPayed) {
+//                        ticketController.add(factory.getTicket(ticketType, Double.parseDouble(ticketPriceEntered[personIterator.getIndex() -1 ]), person , personPayed));
+//
+//                    }
+//                }
+//            }
+        }); return panel;
     }
+
+
 
 
 
