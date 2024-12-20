@@ -39,7 +39,7 @@ public class CreatePersonPanel extends JPanel {
         addCreatePersonButtonActionListener();
         addRemovePersonButtonActionListener();
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         this.add(label);
         this.add(new JScrollPane(createdPersonList)); // Ensure the list is scrollable

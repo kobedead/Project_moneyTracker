@@ -30,7 +30,8 @@ public class CreateTicketPanel extends JPanel {
 
     private JList<String> possibleTickets;
     private DefaultListModel<String> possibleTicketsModel;
-
+    private JList<Person> createdPersonList;
+    private static DefaultListModel<Person> createdPersonListModel;
 
 
     // Get your controller in this class via the constructor
@@ -55,7 +56,13 @@ public class CreateTicketPanel extends JPanel {
 
         ticketPrice = new JTextField(10);
 
+        createdPersonListModel = new DefaultListModel<>();
+        createdPersonList = new JList<>(createdPersonListModel);
         this.personIterator = personIterator;
+        while (personIterator.hasNext()){
+            Person person = (Person) personIterator.getElement();
+            createdPersonListModel.addElement(person);
+        }
 
         addCheckInButtonActionListener();
         addCheckOutButtonActionListener();
@@ -65,6 +72,7 @@ public class CreateTicketPanel extends JPanel {
         this.add(label);
         this.add(typeDropdown);
         this.add(ticketPrice);
+        this.add(new JScrollPane(createdPersonList));
         this.add(this.SplitEqual);
         this.add(this.SplitDiff);
         this.add(createBackButtonPanel());
@@ -79,6 +87,13 @@ public class CreateTicketPanel extends JPanel {
     }
 
 
+    public static void addPersonDisp(Person person) {
+        createdPersonListModel.addElement(person);
+    }
+
+    public static void removePersonDisp(Person person) {
+        createdPersonListModel.removeElement(person);
+    }
 
 
     public void addCheckInButtonActionListener()

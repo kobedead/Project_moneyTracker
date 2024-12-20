@@ -110,8 +110,10 @@ public class ViewFrame extends JFrame implements NavigationListener, PropertyCha
     public void propertyChange(PropertyChangeEvent evt) {
         if ("PersonAdded".equals(evt.getPropertyName())) {
             createPersonPanel.addPersonDisp((Person) evt.getNewValue());
+            CreateTicketPanel.addPersonDisp((Person) evt.getNewValue());
         } else if ("PersonDeleted".equals(evt.getPropertyName())) {
             createPersonPanel.removePersonDisp((Person) evt.getNewValue());
+            CreateTicketPanel.removePersonDisp((Person) evt.getNewValue());
         } else if ("TicketAdded".equals(evt.getPropertyName())) {
             displayTicketsPanel.addTicket((Ticket) evt.getNewValue());
         } else if ("TicketDeleted".equals(evt.getPropertyName())) {
