@@ -5,9 +5,11 @@ import Factory.TicketFactory;
 import Iterator.Iterator;
 import Person.Person;
 import Tickets.Ticket;
+import view.NavigationListener;
 
 
 import javax.swing.*;
+import java.awt.*;
 
 public class CreateTicketPanel extends JPanel {
 
@@ -16,6 +18,7 @@ public class CreateTicketPanel extends JPanel {
 
     // Get your controller in this private field
     private TicketController ticketController;
+    private NavigationListener navigationListener;
 
     private Person selectedPerson;
     private Iterator personIterator;
@@ -27,13 +30,14 @@ public class CreateTicketPanel extends JPanel {
 
     private JList<String> possibleTickets;
     private DefaultListModel<String> possibleTicketsModel;
-    private boolean panel = false;
+
 
 
     // Get your controller in this class via the constructor
-    public CreateTicketPanel(TicketController ticketController, TicketFactory factory , Iterator personIterator)
+    public CreateTicketPanel(TicketController ticketController, TicketFactory factory , Iterator personIterator, NavigationListener navigationListener)
     {
         this.ticketController = ticketController ;
+        this.navigationListener = navigationListener;
         JLabel label = new JLabel("Registration buttons");
         this.SplitEqual = new JButton("EqSplit");
         this.SplitDiff = new JButton("UnevenSplit");
@@ -63,6 +67,7 @@ public class CreateTicketPanel extends JPanel {
         this.add(ticketPrice);
         this.add(this.SplitEqual);
         this.add(this.SplitDiff);
+        this.add(createBackButtonPanel());
 
 
     }
@@ -100,11 +105,11 @@ public class CreateTicketPanel extends JPanel {
         });
     }
 
-    public boolean addCheckOutButtonActionListener()
+    public void addCheckOutButtonActionListener()
     {
         this.SplitDiff.addActionListener(listener ->
         {
-            panel = true;
+
 //            //make it here that an amount for every person needs to be typed , with '/' between them
 //            //the amount will get done from top to bottom of persons in list?????
 //
@@ -123,10 +128,16 @@ public class CreateTicketPanel extends JPanel {
 //                    }
 //                }
 //            }
-        }); return panel;
+        });
     }
 
-
+    private JPanel createBackButtonPanel() {
+        JPanel backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JButton backButton = new JButton("Back to Menu");
+        backButton.addActionListener(e -> navigationListener.switchPanel("Menu"));
+        backPanel.add(backButton);
+        return backPanel;
+    }
 
 
 

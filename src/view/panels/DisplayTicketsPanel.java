@@ -2,12 +2,15 @@ package view.panels;
 
 import Controllers.TicketController;
 import Tickets.Ticket;
+import view.NavigationListener;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class DisplayTicketsPanel extends JPanel {
 
     private TicketController ticketController ;
+    private NavigationListener navigationListener;
 
     private JList<Ticket> entryJList;
     private DefaultListModel<Ticket> entryListModel;
@@ -16,7 +19,7 @@ public class DisplayTicketsPanel extends JPanel {
     private JButton calcTotal;
     JScrollPane pane ;
 
-    public DisplayTicketsPanel(TicketController ticketController)
+    public DisplayTicketsPanel(TicketController ticketController, NavigationListener navigationListener)
     {
         JLabel label = new JLabel("Registrations");
         entryListModel = new DefaultListModel<>();
@@ -31,6 +34,7 @@ public class DisplayTicketsPanel extends JPanel {
         addCalcTotalActionListener();
 
         this.ticketController = ticketController;
+        this.navigationListener = navigationListener;
 
         pane = new JScrollPane(entryJList);
 
@@ -41,7 +45,7 @@ public class DisplayTicketsPanel extends JPanel {
         this.add(entryJList);
         this.add(removeButton);
         this.add(calcTotal);
-
+        this.add(createBackButtonPanel());
 
     }
 
@@ -74,4 +78,11 @@ public class DisplayTicketsPanel extends JPanel {
         });
     }
 
+    private JPanel createBackButtonPanel() {
+        JPanel backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JButton backButton = new JButton("Back to Menu");
+        backButton.addActionListener(e -> navigationListener.switchPanel("Menu"));
+        backPanel.add(backButton);
+        return backPanel;
+    }
 }

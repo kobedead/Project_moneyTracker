@@ -26,7 +26,8 @@ public class PersonDatabase extends Database<Person> {
     }
 
     public void remove(Person person){
-        //if no tickets
+        support.firePropertyChange("PersonDeleted" , null , person );
+        personList.remove(person);
     }
 
 }

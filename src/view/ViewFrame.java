@@ -16,13 +16,14 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class ViewFrame extends JFrame implements PropertyChangeListener, ListSelectionListener {
+public class ViewFrame extends JFrame implements NavigationListener, PropertyChangeListener, ListSelectionListener {
     private final PersonController personController;
     private final TicketController ticketController;
     private final TicketFactory ticketFactory;
 
     private JPanel cardPanel; // The main panel for CardLayout
     private CardLayout cardLayout; // CardLayout instance
+    private JPanel currentPanel;
 
     private CreatePersonPanel createPersonPanel;
     private CreateTicketPanel createTicketPanel;
@@ -43,9 +44,9 @@ public class ViewFrame extends JFrame implements PropertyChangeListener, ListSel
         this.add(cardPanel);
 
         // Initialize panels
-        createPersonPanel = new CreatePersonPanel(personController);
-        createTicketPanel = new CreateTicketPanel(ticketController, ticketFactory, personController.CreateIterator());
-        displayTicketsPanel = new DisplayTicketsPanel(ticketController);
+        createPersonPanel = new CreatePersonPanel(personController, this);
+        createTicketPanel = new CreateTicketPanel(ticketController, ticketFactory, personController.CreateIterator(), this);
+        displayTicketsPanel = new DisplayTicketsPanel(ticketController, this);
 
         // Add panels to CardLayout
         cardPanel.add(createMenuPanel(), "Menu");
@@ -89,7 +90,19 @@ public class ViewFrame extends JFrame implements PropertyChangeListener, ListSel
         return menu;
     }
 
-    private void switchPanel(String panelName) {
+    @Override
+    public void switchPanel(String panelName) {
+
+        if ("Menu".equals(panelName)) {
+            currentPanel = createMenuPanel();
+        } else if ("Add Person".equals(panelName)) {
+            currentPanel = createPersonPanel;
+        } else if ("Add Ticket".equals(panelName)) {
+            currentPanel = createTicketPanel;
+        } else if ("Calculate Bill".equals(panelName)) {
+            currentPanel = displayTicketsPanel;
+        }
+
         cardLayout.show(cardPanel, panelName);
     }
 

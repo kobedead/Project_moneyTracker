@@ -4,6 +4,7 @@ package view.panels;
 
 import Controllers.PersonController;
 import Person.Person;
+import view.NavigationListener;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
@@ -20,9 +21,11 @@ public class CreatePersonPanel extends JPanel {
     private JTextField personName;
 
     private PersonController personController;
+    private NavigationListener navigationListener;
 
-    public CreatePersonPanel(PersonController personController) {
+    public CreatePersonPanel(PersonController personController, NavigationListener navigationListener) {
         this.personController = personController;
+        this.navigationListener = navigationListener;
 
         JLabel label = new JLabel("Create Person");
         createdPersonListModel = new DefaultListModel<>();
@@ -43,6 +46,7 @@ public class CreatePersonPanel extends JPanel {
         this.add(personName);
         this.add(createPerson);
         this.add(removePerson);
+        this.add(createBackButtonPanel());
     }
 
     public void addSelectListListener(ListSelectionListener listener) {
@@ -106,7 +110,7 @@ public class CreatePersonPanel extends JPanel {
     private JPanel createBackButtonPanel() {
         JPanel backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton backButton = new JButton("Back to Menu");
-        backButton.addActionListener(e -> switchPanel("Menu"));
+        backButton.addActionListener(e -> navigationListener.switchPanel("Menu"));
         backPanel.add(backButton);
         return backPanel;
     }
