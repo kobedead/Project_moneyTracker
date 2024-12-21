@@ -23,7 +23,6 @@ public class ViewFrame extends JFrame implements NavigationListener, PropertyCha
 
     private JPanel cardPanel; // The main panel for CardLayout
     private CardLayout cardLayout; // CardLayout instance
-    private JPanel currentPanel;
 
     private CreatePersonPanel createPersonPanel;
     private CreateTicketPanel createTicketPanel;
@@ -92,17 +91,6 @@ public class ViewFrame extends JFrame implements NavigationListener, PropertyCha
 
     @Override
     public void switchPanel(String panelName) {
-
-        if ("Menu".equals(panelName)) {
-            currentPanel = createMenuPanel();
-        } else if ("Add Person".equals(panelName)) {
-            currentPanel = createPersonPanel;
-        } else if ("Add Ticket".equals(panelName)) {
-            currentPanel = createTicketPanel;
-        } else if ("Calculate Bill".equals(panelName)) {
-            currentPanel = displayTicketsPanel;
-        }
-
         cardLayout.show(cardPanel, panelName);
     }
 
@@ -115,9 +103,11 @@ public class ViewFrame extends JFrame implements NavigationListener, PropertyCha
             createPersonPanel.removePersonDisp((Person) evt.getNewValue());
             CreateTicketPanel.removePersonDisp((Person) evt.getNewValue());
         } else if ("TicketAdded".equals(evt.getPropertyName())) {
-            displayTicketsPanel.addTicket((Ticket) evt.getNewValue());
+//            displayTicketsPanel.addTicket((Ticket) evt.getNewValue());
+            createTicketPanel.addTicketDisp((Ticket) evt.getNewValue());
         } else if ("TicketDeleted".equals(evt.getPropertyName())) {
-            displayTicketsPanel.removeTicket((Ticket) evt.getNewValue());
+//            displayTicketsPanel.removeTicket((Ticket) evt.getNewValue());
+            createTicketPanel.removeTicketDisp((Ticket) evt.getNewValue());
         }
     }
 
