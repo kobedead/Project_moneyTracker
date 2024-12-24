@@ -1,11 +1,15 @@
 package view.panels;
 
 import Controllers.TicketController;
+import Databases.CustomDict;
+import Person.Person;
 import Tickets.Ticket;
 import view.NavigationListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DisplayTicketsPanel extends JPanel {
 
@@ -15,22 +19,25 @@ public class DisplayTicketsPanel extends JPanel {
     private JList<Ticket> entryJList;
     private DefaultListModel<Ticket> entryListModel;
 
-    private JButton removeButton;
+    private JButton splitButton;
     private JButton calcTotal;
+
+    private List<Ticket> finalpay = new ArrayList<>();
+    private CustomDict<Person, Double> balances = new CustomDict<Person, Double>();
     JScrollPane pane ;
 
     public DisplayTicketsPanel(TicketController ticketController, NavigationListener navigationListener)
     {
-        JLabel label = new JLabel("Registrations");
+        JLabel label = new JLabel("Tickets");
         entryListModel = new DefaultListModel<>();
         entryJList = new JList<>(entryListModel);
 
 
-        removeButton = new JButton("Delete") ;
+        splitButton = new JButton("Split") ;
         calcTotal = new JButton("CalcTotal");
 
 
-        addRemoveButtonActionListener();
+        addSplitButtonActionListener();
         addCalcTotalActionListener();
 
         this.ticketController = ticketController;
@@ -43,29 +50,29 @@ public class DisplayTicketsPanel extends JPanel {
 
         this.add(label);
         this.add(entryJList);
-        this.add(removeButton);
+        this.add(splitButton);
         this.add(calcTotal);
         this.add(createBackButtonPanel());
 
     }
 
-    public void addTicket(Ticket entry)
-    {
-        this.entryListModel.addElement(entry);
+    public void addTicketDisp(Ticket ticket) {
+        entryListModel.addElement(ticket);
     }
 
-    public void removeTicket(Ticket ticket){
-        this.entryListModel.removeElement(ticket);}
+    public void removeTicketDisp(Ticket ticket) {
+        entryListModel.removeElement(ticket);
+    }
 
 
-
-    public void addRemoveButtonActionListener()
+    public List<Ticket> addSplitButtonActionListener()
     {
-        this.removeButton.addActionListener(listener ->
+        this.splitButton.addActionListener(listener ->
         {
-            ticketController.remove(entryJList.getSelectedValue());
+
 
         });
+        return finalpay;
     }
 
     public void addCalcTotalActionListener()

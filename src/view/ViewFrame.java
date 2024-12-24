@@ -103,10 +103,10 @@ public class ViewFrame extends JFrame implements NavigationListener, PropertyCha
             createPersonPanel.removePersonDisp((Person) evt.getNewValue());
             CreateTicketPanel.removePersonDisp((Person) evt.getNewValue());
         } else if ("TicketAdded".equals(evt.getPropertyName())) {
-//            displayTicketsPanel.addTicket((Ticket) evt.getNewValue());
+            displayTicketsPanel.addTicketDisp((Ticket) evt.getNewValue());
             createTicketPanel.addTicketDisp((Ticket) evt.getNewValue());
         } else if ("TicketDeleted".equals(evt.getPropertyName())) {
-//            displayTicketsPanel.removeTicket((Ticket) evt.getNewValue());
+            displayTicketsPanel.removeTicketDisp((Ticket) evt.getNewValue());
             createTicketPanel.removeTicketDisp((Ticket) evt.getNewValue());
         }
     }
