@@ -29,7 +29,7 @@ public class PersonController implements Controller<Person> {
 
     @Override
     public void remove(Person person) {
-
+        db.remove(person);
     }
 
 

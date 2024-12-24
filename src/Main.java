@@ -24,8 +24,8 @@ public class Main {
         TicketFactory factory = new TicketFactory();
 
 
-        ViewFrame view = new ViewFrame();
-        view.initialize(personCon , ticketCon , factory);
+        ViewFrame view = new ViewFrame(personCon, ticketCon, factory);
+
 
 
         personDB.addObserver(view);
