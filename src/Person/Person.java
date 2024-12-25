@@ -20,7 +20,7 @@ public class Person {
     @Override
     public  String toString(){
 
-        return String.format("Person , Name : %s" , name);
+        return String.format("Name: %s" , name);
     }
 
 
