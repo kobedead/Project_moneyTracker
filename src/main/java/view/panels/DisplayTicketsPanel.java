@@ -13,6 +13,12 @@ public class DisplayTicketsPanel extends JPanel {
     private JList<Ticket> entryJList;
     private DefaultListModel<Ticket> entryListModel;
 
+    private JList<Ticket> total ;
+
+    private DefaultListModel<Ticket> totalModel;
+
+
+
     private JButton removeButton;
     private JButton calcTotal;
     JScrollPane pane ;
@@ -22,6 +28,11 @@ public class DisplayTicketsPanel extends JPanel {
         JLabel label = new JLabel("Registrations");
         entryListModel = new DefaultListModel<>();
         entryJList = new JList<>(entryListModel);
+
+        totalModel = new DefaultListModel<>();
+        total = new JList<>(totalModel);
+
+
 
 
         removeButton = new JButton("Delete") ;
@@ -42,6 +53,7 @@ public class DisplayTicketsPanel extends JPanel {
         this.add(entryJList);
         this.add(removeButton);
         this.add(calcTotal);
+        this.add(total);
 
     }
 
@@ -68,9 +80,9 @@ public class DisplayTicketsPanel extends JPanel {
     {
         this.calcTotal.addActionListener(listener ->
         {
-            entryListModel.removeAllElements();
+            totalModel.removeAllElements();
             for(Ticket ticket :ticketController.CalculateTotal() )
-                entryListModel.addElement(ticket);
+                totalModel.addElement(ticket);
 
         });
     }
