@@ -117,7 +117,6 @@ public class ViewFrame extends JFrame implements NavigationListener, PropertyCha
             JList<?> source = (JList<?>) e.getSource();
             Object selected = source.getSelectedValue();
             if (selected instanceof Person) {
-                // Pass the selected person to the CreateTicketPanel
                 createTicketPanel.setSelectedPerson((Person) selected);
             }
         }

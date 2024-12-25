@@ -1,7 +1,5 @@
 package Factory;
 
-import Databases.Database;
-import Databases.TicketDatabase;
 import Person.Person;
 import Tickets.AirplaneTicket;
 import Tickets.CinemaTicket;

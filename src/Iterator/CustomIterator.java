@@ -1,6 +1,6 @@
 package Iterator;
 
-public interface Iterator<T> {
+public interface CustomIterator<T> {
 
 
     int getLenght();
@@ -8,10 +8,6 @@ public interface Iterator<T> {
     boolean hasNext();
     T getElement();
 
-
-
-
-
-
+    void reset();
 
 }

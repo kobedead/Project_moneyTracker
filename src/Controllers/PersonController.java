@@ -1,30 +1,44 @@
 package Controllers;
 
 import Databases.Database;
-import Databases.PersonDatabase;
-import Iterator.Iterator;
+import Iterator.CustomIterator;
 import Person.Person;
 
 public class PersonController implements Controller<Person> {
 
-    protected PersonDatabase db ;
+    protected Database<Person> db ;
+    protected CustomIterator<Person> personIterator;
 
+    public PersonController(Database<Person> database , CustomIterator<Person> personIterator){
 
-    public PersonController(PersonDatabase database){
         db = database;
+        this.personIterator = personIterator;
     }
 
 
-    public  Iterator CreateIterator(){
+    public CustomIterator CreateIterator(){
         return db.createIterator();
     }
 
+
+    public void addByName(String name){
+
+        Boolean alreadyIn = false ;
+        while (personIterator.hasNext()) {
+            if(personIterator.getElement().getName().equals(name)){
+                System.out.println("Error :  person is already in database");
+                alreadyIn = true;
+            }
+        }
+
+        if(!alreadyIn)
+            db.add(new Person(name));
+
+    }
+
     @Override
-    public void add(Person person){
-
-        db.add(person);
-
-
+    public void add(Person object) {
+        db.add(object);
     }
 
     @Override

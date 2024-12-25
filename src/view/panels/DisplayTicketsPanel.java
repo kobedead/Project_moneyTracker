@@ -18,40 +18,41 @@ public class DisplayTicketsPanel extends JPanel {
 
     private JList<Ticket> entryJList;
     private DefaultListModel<Ticket> entryListModel;
+    private JList<Ticket> calcTotalList;
+    private DefaultListModel<Ticket> calcTotalListModel;
 
-    private JButton splitButton;
     private JButton calcTotal;
 
     private List<Ticket> finalpay = new ArrayList<>();
     private CustomDict<Person, Double> balances = new CustomDict<Person, Double>();
-    JScrollPane pane ;
+    JScrollPane ticketPane, billPane ;
 
     public DisplayTicketsPanel(TicketController ticketController, NavigationListener navigationListener)
     {
         JLabel label = new JLabel("Tickets");
         entryListModel = new DefaultListModel<>();
         entryJList = new JList<>(entryListModel);
+        calcTotalListModel = new DefaultListModel<>();
+        calcTotalList = new JList<>(calcTotalListModel);
 
-
-        splitButton = new JButton("Split") ;
         calcTotal = new JButton("CalcTotal");
 
 
-        addSplitButtonActionListener();
         addCalcTotalActionListener();
 
         this.ticketController = ticketController;
         this.navigationListener = navigationListener;
 
-        pane = new JScrollPane(entryJList);
+        ticketPane = new JScrollPane(entryJList);
+        billPane = new JScrollPane(calcTotalList);
 
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.add(label);
-        this.add(entryJList);
-        this.add(splitButton);
+        this.add(ticketPane);
         this.add(calcTotal);
+        this.add(billPane);
         this.add(createBackButtonPanel());
 
     }
@@ -65,23 +66,11 @@ public class DisplayTicketsPanel extends JPanel {
     }
 
 
-    public List<Ticket> addSplitButtonActionListener()
-    {
-        this.splitButton.addActionListener(listener ->
-        {
-
-
-        });
-        return finalpay;
-    }
-
     public void addCalcTotalActionListener()
     {
         this.calcTotal.addActionListener(listener ->
         {
-            entryListModel.removeAllElements();
-            entryListModel.addAll(ticketController.CalcTotal());
-
+            calcTotalListModel.addAll(ticketController.CalculateTotal());
         });
     }
 
