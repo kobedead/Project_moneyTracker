@@ -23,13 +23,12 @@ public class DisplayTicketsPanel extends JPanel {
 
     private JButton calcTotal;
 
-    private List<Ticket> finalpay = new ArrayList<>();
-    private CustomDict<Person, Double> balances = new CustomDict<Person, Double>();
     JScrollPane ticketPane, billPane ;
 
     public DisplayTicketsPanel(TicketController ticketController, NavigationListener navigationListener)
     {
         JLabel label = new JLabel("Tickets");
+        JLabel label2 = new JLabel("Total Bill");
         entryListModel = new DefaultListModel<>();
         entryJList = new JList<>(entryListModel);
         calcTotalListModel = new DefaultListModel<>();
@@ -52,6 +51,7 @@ public class DisplayTicketsPanel extends JPanel {
         this.add(label);
         this.add(ticketPane);
         this.add(calcTotal);
+        this.add(label2);
         this.add(billPane);
         this.add(createBackButtonPanel());
 
@@ -70,6 +70,7 @@ public class DisplayTicketsPanel extends JPanel {
     {
         this.calcTotal.addActionListener(listener ->
         {
+            calcTotalListModel.clear();
             calcTotalListModel.addAll(ticketController.CalculateTotal());
         });
     }
