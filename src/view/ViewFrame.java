@@ -35,6 +35,7 @@ public class ViewFrame extends JFrame implements NavigationListener, PropertyCha
         this.ticketFactory = ticketFactory;
 
         this.setSize(700, 400);
+        this.setLocation(1000, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Initialize CardLayout
