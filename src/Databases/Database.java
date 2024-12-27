@@ -2,17 +2,16 @@ package Databases;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import Iterator.CustomIterator;
 
 public abstract class Database<T>
 {
 
 
 
-    protected static Map<Class<?>, Database> instance = new HashMap<>() ;   //per class maar 1 datanbase (singleton)
+    protected static Map<Class<?>, Database<?>> instance = new HashMap<>() ;   //per class maar 1 datanbase (singleton)
 
     public final PropertyChangeSupport support;
 
@@ -29,7 +28,7 @@ public abstract class Database<T>
 
 
     //double-checked locking for multithreading safety
-    public static Database getInstance(Class<? extends Database> specDatabase) {
+    public static <T extends Database<?>> T getInstance(Class<T> specDatabase) {
         if (!instance.containsKey(specDatabase)) {
             synchronized (Database.class){
                 if (!instance.containsKey(specDatabase)){
@@ -41,12 +40,11 @@ public abstract class Database<T>
                 }
             }
         }
-        return instance.get(specDatabase);
+        return  specDatabase.cast(instance.get(specDatabase));
     }
 
 
-
-
+    public abstract CustomIterator<T> createIterator();
 
 
     // Add a property change listener

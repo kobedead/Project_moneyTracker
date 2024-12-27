@@ -11,7 +11,7 @@ public class CinemaTicket extends Ticket {
 
     @Override
     public String toString() {
-        return String.format("CinemaTicket , price : " + price + " , from  : " + from  + " , to  : "+to );
+        return String.format("CinemaTicket , price : %.2f  from  %s  to %s" , price , from.getName() , to.getName());
     }
 
 }

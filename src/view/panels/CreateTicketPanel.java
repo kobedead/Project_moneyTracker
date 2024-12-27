@@ -2,7 +2,7 @@ package view.panels;
 
 import Controllers.TicketController;
 import Factory.TicketFactory;
-import Iterator.Iterator;
+import Iterator.CustomIterator;
 import Person.Person;
 import Tickets.Ticket;
 import view.NavigationListener;
@@ -10,16 +10,18 @@ import view.NavigationListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class CreateTicketPanel extends JPanel {
     private JButton addTicketButton;
     private JButton removeTicketButton;
+    private JCheckBox unequalPay;
 
     private TicketController ticketController;
     private NavigationListener navigationListener;
 
     private Person selectedPerson;
-    private Iterator personIterator;
+    private CustomIterator personIterator;
 
     private TicketFactory factory;
 
@@ -27,18 +29,17 @@ public class CreateTicketPanel extends JPanel {
 
     private JList<Ticket> ticketList;
     private DefaultListModel<Ticket> ticketListModel;
-    private DefaultListModel<String> possibleTicketsModel;
     private JList<Person> createdPersonList;
     private static DefaultListModel<Person> createdPersonListModel;
 
-    public CreateTicketPanel(TicketController ticketController, TicketFactory factory, Iterator personIterator, NavigationListener navigationListener) {
+    public CreateTicketPanel(TicketController ticketController, TicketFactory factory, CustomIterator personIterator, NavigationListener navigationListener) {
         this.ticketController = ticketController;
         this.navigationListener = navigationListener;
-        this.factory = factory;
 
         JLabel label = new JLabel("Choose Ticket Type");
         this.addTicketButton = new JButton("Add Ticket");
         this.removeTicketButton = new JButton("Remove Ticket");
+        this.unequalPay = new JCheckBox("Unequal Pay");
 
         // Initialize ticket list
         ticketListModel = new DefaultListModel<>();
@@ -46,14 +47,12 @@ public class CreateTicketPanel extends JPanel {
         JScrollPane ticketScrollPane = new JScrollPane(ticketList);
         ticketScrollPane.setPreferredSize(new Dimension(300, 150));
 
-        // Initialize dropdown
-        possibleTicketsModel = new DefaultListModel<>();
+
         typeDropdown = new JComboBox<>();
         for (String ticket : factory.getKindsOfTickets()) {
             typeDropdown.addItem(ticket);
         }
 
-        // Initialize person list
         createdPersonListModel = new DefaultListModel<>();
         createdPersonList = new JList<>(createdPersonListModel);
         JScrollPane personScrollPane = new JScrollPane(createdPersonList);
@@ -66,7 +65,7 @@ public class CreateTicketPanel extends JPanel {
         }
 
         // Add action listeners
-        addCheckInButtonActionListener();
+        addTicketButtonActionListener();
         addRemoveTicketButtonActionListener();
 
         // Panel layout
@@ -77,8 +76,9 @@ public class CreateTicketPanel extends JPanel {
         this.add(typeDropdown);
         this.add(ticketScrollPane);
         this.add(personScrollPane);
-        this.add(this.addTicketButton);
-        this.add(this.removeTicketButton);
+        this.add(addTicketButton);
+        this.add(removeTicketButton);
+        this.add(unequalPay);
         this.add(createBackButtonPanel());
     }
 
@@ -96,7 +96,6 @@ public class CreateTicketPanel extends JPanel {
         ticketListModel.removeElement(ticket);
     }
 
-
     public static void addPersonDisp(Person person) {
         createdPersonListModel.addElement(person);
     }
@@ -106,32 +105,57 @@ public class CreateTicketPanel extends JPanel {
     }
 
 
-    public void addCheckInButtonActionListener() {
+    public void addTicketButtonActionListener() {
         this.addTicketButton.addActionListener(listener -> {
-            String ticketPriceEntered = JOptionPane.showInputDialog("Enter Ticket Price");
-            String ticketType = (String) typeDropdown.getSelectedItem();
             selectedPerson = createdPersonList.getSelectedValue();
+            String ticketType = (String) typeDropdown.getSelectedItem();
 
-            if (ticketPriceEntered == null || ticketType == null || selectedPerson == null) {
-                JOptionPane.showMessageDialog(this, "Please fill in all fields and select a person.", "Error", JOptionPane.ERROR_MESSAGE);
+            if (ticketType == null || selectedPerson == null) {
+                JOptionPane.showMessageDialog(this, "Please select a ticket type and a person.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            try {
-                double ticketPrice = Double.parseDouble(ticketPriceEntered);
+            if (!unequalPay.isSelected()) {
+                // Split Equally Logic
+                String ticketPriceEntered = JOptionPane.showInputDialog("Enter Ticket Price");
+                if (ticketPriceEntered == null) {
+                    JOptionPane.showMessageDialog(this, "Please enter a valid ticket price.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
-                // Create ticket for the selected person
-                Ticket ticket = factory.getTicket(ticketType, ticketPrice, selectedPerson, selectedPerson);
+                try {
+                    ticketController.addSplitEqual(ticketType, ticketPriceEntered, selectedPerson.getName());
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this, "Invalid price. Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                // Unequal Pay Logic
+                ArrayList<String> prices = new ArrayList<>();
+                for (int i = 0; i < createdPersonListModel.size(); i++) {
+                    Person person = createdPersonListModel.get(i);
+                    if (person.equals(selectedPerson)) continue;
 
-                // Add ticket to the controller and UI
-                ticketController.add(ticket); // Ensure this method triggers property changes or similar updates
+                    String price = JOptionPane.showInputDialog("Enter Ticket Price for " + person.getName());
+                    if (price == null) {
+                        JOptionPane.showMessageDialog(this, "Please enter valid prices for all persons.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    prices.add(price);
+                }
 
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Invalid price. Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+                if (prices.size() != createdPersonListModel.size() - 1) {
+                    JOptionPane.showMessageDialog(this, "Please enter prices for all participants except the selected person.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try {
+                    ticketController.addSplitUnequal(ticketType, prices, selectedPerson.getName());
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this, "Invalid price. Please enter valid numbers.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }
-
 
     public void addRemoveTicketButtonActionListener() {
         this.removeTicketButton.addActionListener(listener -> {
@@ -141,7 +165,6 @@ public class CreateTicketPanel extends JPanel {
                 return;
             }
 
-            // Check if the person can be safely removed
             ticketController.remove(selectedValue);
         });
     }
@@ -153,8 +176,6 @@ public class CreateTicketPanel extends JPanel {
         backPanel.add(backButton);
         return backPanel;
     }
-
-
 
 
 

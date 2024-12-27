@@ -4,6 +4,9 @@ import Databases.Database;
 import Databases.PersonDatabase;
 import Databases.TicketDatabase;
 import Factory.TicketFactory;
+import Iterator.CustomIterator;
+import Person.Person;
+import Tickets.Ticket;
 import view.ViewFrame;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -11,29 +14,21 @@ import view.ViewFrame;
 public class Main {
     public static void main(String[] args) {
 
-        Database personDB = Database.getInstance(PersonDatabase.class);
-        Database ticketDB = Database.getInstance(TicketDatabase.class);
-
-
-
-
-        PersonController personCon = new PersonController((PersonDatabase) personDB);
-        TicketController ticketCon = new TicketController((TicketDatabase) ticketDB);
-
+        Database<Person> personDB = Database.getInstance(PersonDatabase.class);
+        Database<Ticket> ticketDB = Database.getInstance(TicketDatabase.class);
 
         TicketFactory factory = new TicketFactory();
 
+        CustomIterator<Person> personCustomIterator = personDB.createIterator();
+        CustomIterator<Ticket> ticketCustomIterator = ticketDB.createIterator();
+
+        PersonController personCon = new PersonController(personDB, personCustomIterator);
+        TicketController ticketCon = new TicketController(ticketDB, factory, personCustomIterator, ticketCustomIterator);
 
         ViewFrame view = new ViewFrame(personCon, ticketCon, factory);
 
-
-
         personDB.addObserver(view);
         ticketDB.addObserver(view);
-
-
-
-
 
         }
     }

@@ -35,6 +35,7 @@ public class ViewFrame extends JFrame implements NavigationListener, PropertyCha
         this.ticketFactory = ticketFactory;
 
         this.setSize(700, 400);
+        this.setLocation(1000, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Initialize CardLayout
@@ -117,7 +118,6 @@ public class ViewFrame extends JFrame implements NavigationListener, PropertyCha
             JList<?> source = (JList<?>) e.getSource();
             Object selected = source.getSelectedValue();
             if (selected instanceof Person) {
-                // Pass the selected person to the CreateTicketPanel
                 createTicketPanel.setSelectedPerson((Person) selected);
             }
         }

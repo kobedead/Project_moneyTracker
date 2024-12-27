@@ -1,23 +1,23 @@
 package Iterator;
 
-import Person.Person;
+
+import Tickets.Ticket;
 
 import java.util.List;
 
-public class PersonDBIterator implements CustomIterator<Person> {
+public class TicketDBIterator implements CustomIterator<Ticket> {
 
 
-    private List<Person> databaseList;
+    private List<Ticket> databaseList ;
 
     private int index = 0;
 
 
-    public PersonDBIterator(List<Person> databaseList) {
+    public TicketDBIterator(List<Ticket> databaseList){
         this.databaseList = databaseList;
     }
-
     @Override
-    public int getLenght() {
+    public int getLenght(){
         return databaseList.size();
     }
 
@@ -30,9 +30,9 @@ public class PersonDBIterator implements CustomIterator<Person> {
     @Override
     public boolean hasNext() {
 
-        if (index == databaseList.size()) {
+        if(index == databaseList.size()){
             //last one
-            index = 0;
+            index = 0 ;
             return false;
         }
         return true;
@@ -40,15 +40,16 @@ public class PersonDBIterator implements CustomIterator<Person> {
     }
 
     @Override
-    public Person getElement() {
+    public Ticket getElement() {
 
         index++;
-        return databaseList.get(index - 1);
+        return databaseList.get(index-1);
 
     }
 
     @Override
     public void reset() {
-        index = 0;
+        index = 0 ;
     }
+
 }

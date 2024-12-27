@@ -7,7 +7,6 @@ import Person.Person;
 import view.NavigationListener;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.Objects;
 
@@ -49,9 +48,6 @@ public class CreatePersonPanel extends JPanel {
         this.add(createBackButtonPanel());
     }
 
-    public void addSelectListListener(ListSelectionListener listener) {
-        this.createdPersonList.addListSelectionListener(listener);
-    }
 
     public void addCreatePersonButtonActionListener() {
         this.createPerson.addActionListener(listener -> {
@@ -86,7 +82,6 @@ public class CreatePersonPanel extends JPanel {
                 return;
             }
 
-            // Check if the person can be safely removed
             personController.remove(selectedPerson);
         });
     }
@@ -97,14 +92,6 @@ public class CreatePersonPanel extends JPanel {
 
     public void removePersonDisp(Person person) {
         createdPersonListModel.removeElement(person);
-    }
-
-    public Person getSelectedPerson() {
-        return createdPersonList.getSelectedValue();
-    }
-
-    public JList<Person> getCreatedPersonList() {
-        return createdPersonList;
     }
 
     private JPanel createBackButtonPanel() {

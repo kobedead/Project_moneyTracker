@@ -11,6 +11,6 @@ public class FinalTicket extends Ticket {
 
     @Override
     public String toString() {
-        return  String.format("FinalPay , price : " + price + " , from  : " + from  + " , to  : "+to );
+        return String.format("FinalPay , price : %.2f  from  %s  to %s" , price , from.getName() , to.getName());
     }
 }

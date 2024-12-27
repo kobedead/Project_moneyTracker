@@ -1,10 +1,9 @@
 package Factory;
 
-import Databases.Database;
-import Databases.TicketDatabase;
 import Person.Person;
 import Tickets.AirplaneTicket;
 import Tickets.CinemaTicket;
+import Tickets.RestaurantTicket;
 import Tickets.Ticket;
 
 import java.util.Arrays;
@@ -18,7 +17,7 @@ public class TicketFactory {
 
     public TicketFactory(){
 
-        kindsOfTickets = Arrays.asList("Airplane" , "Cinema" ) ;
+        kindsOfTickets = Arrays.asList("Airplane" , "Cinema", "Restaurant" ) ;
 
     }
 
@@ -31,6 +30,8 @@ public class TicketFactory {
             return new AirplaneTicket(price , from , to) ;
         else if (Objects.equals(ticketKind, kindsOfTickets.get(1)))
             return new CinemaTicket(price,from ,to);
+        else if (Objects.equals(ticketKind, kindsOfTickets.get(2)))
+            return new RestaurantTicket(price,from ,to);
         else{
             System.out.println("faulty ticketType");
             return null ;

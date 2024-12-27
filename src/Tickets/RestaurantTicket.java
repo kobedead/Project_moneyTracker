@@ -2,10 +2,10 @@ package Tickets;
 
 import Person.Person;
 
-public class AirplaneTicket extends Ticket {
+public class RestaurantTicket extends Ticket {
 
 
-    public AirplaneTicket(Double price, Person from, Person to) {
+    public RestaurantTicket(Double price, Person from, Person to) {
         super(price, from, to);
     }
 
