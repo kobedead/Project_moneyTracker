@@ -4,6 +4,7 @@ import Controllers.TicketController;
 import Factory.TicketFactory;
 import Iterator.CustomIterator;
 import Person.Person;
+import Tickets.Ticket;
 import view.UnequalPayFrame;
 
 import javax.swing.*;
@@ -20,11 +21,9 @@ public class CreateTicketPanel extends JPanel {
     // Get your controller in this private field
     private TicketController ticketController;
 
-    private UnequalPayFrame unequalPayFrame;
     private String selectedPersonName;
     private CustomIterator personCustomIterator;
 
-    private TicketFactory factory;
 
     private JTextField ticketPrice;
 
@@ -34,7 +33,7 @@ public class CreateTicketPanel extends JPanel {
     private List<String> prices;
 
     // Get your controller in this class via the constructor
-    public CreateTicketPanel(TicketController ticketController, TicketFactory factory , CustomIterator personCustomIterator)
+    public CreateTicketPanel(TicketController ticketController, List<String> kindOfTickets , CustomIterator personCustomIterator)
     {
         this.ticketController = ticketController ;
         JLabel label = new JLabel("Registration buttons");
@@ -45,12 +44,12 @@ public class CreateTicketPanel extends JPanel {
         possibleTickets = new JList<>(possibleTicketsModel);
 
         //list of possible tickets
-        for(String ticketKinds :factory.getKindsOfTickets())
+        for(String ticketKinds :kindOfTickets)
             possibleTicketsModel.addElement(ticketKinds);
 
 
 
-        this.factory = factory;
+
 
         ticketPrice = new JTextField(10);
 

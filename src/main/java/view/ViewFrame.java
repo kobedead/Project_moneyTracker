@@ -16,6 +16,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 public class ViewFrame extends JFrame implements PropertyChangeListener , ListSelectionListener
 {
@@ -33,7 +34,7 @@ public class ViewFrame extends JFrame implements PropertyChangeListener , ListSe
         super("Registration");
     }
 
-    public void initialize(PersonController personController, TicketController ticketController , TicketFactory ticketFactory)
+    public void initialize(PersonController personController, TicketController ticketController , List<String> kindOfTickets )
     {
         this.setSize(900, 400);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,7 +51,7 @@ public class ViewFrame extends JFrame implements PropertyChangeListener , ListSe
         createPersonPanel.addSelectListLister(this);
 
 
-        createTicketPanel = new CreateTicketPanel(ticketController , ticketFactory , personController.CreateIterator() );
+        createTicketPanel = new CreateTicketPanel(ticketController ,  kindOfTickets , personController.CreateIterator() );
 
 
         displayTicketsPanel = new DisplayTicketsPanel(ticketController);

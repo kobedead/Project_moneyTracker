@@ -34,7 +34,7 @@ public class Main {
 
 
         ViewFrame view = new ViewFrame();
-        view.initialize(personCon , ticketCon , factory);
+        view.initialize(personCon , ticketCon , factory.getKindsOfTickets());
 
 
         personDB.addObserver(view);
