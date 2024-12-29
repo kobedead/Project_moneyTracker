@@ -24,7 +24,7 @@ public class PersonDatabase extends Database<Person> {
 
     //first i passed a person object to fire but i tried to seperate backend and visualisations as much
     public void add(Person person){
-        support.firePropertyChange("PersonAdded" , null , person.getName() );
+        support.firePropertyChange("PersonAdded" , null , person );
         personList.add(person);
     }
 

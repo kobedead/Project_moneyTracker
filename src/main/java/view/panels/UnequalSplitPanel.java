@@ -13,7 +13,7 @@ public class UnequalSplitPanel extends JPanel {
     CustomIterator personIterator;
     List<String> prices;
 
-    String selectedName ;
+    Person selected ;
 
     JButton submitButton ;
     List<JTextArea> persons ;
@@ -23,10 +23,10 @@ public class UnequalSplitPanel extends JPanel {
 
 
 
-    public UnequalSplitPanel(String selectedName  , CustomIterator<Person> personIterator, List<String> prices){
+    public UnequalSplitPanel(Person selected  , CustomIterator<Person> personIterator, List<String> prices){
         this.personIterator = personIterator;
         this.prices = prices;
-        this.selectedName = selectedName;
+        this.selected = selected;
 
         submitButton = new JButton("submit");
         //submitButton.setBounds(100, 150, 50, 20); // Set button position and size
@@ -45,7 +45,7 @@ public class UnequalSplitPanel extends JPanel {
         //make namefields and textfield for entering amount
         while (personIterator.hasNext()) {
             Person person = personIterator.getElement();
-            if (!person.getName().equals(selectedName)) {
+            if (person != selected) {
 
                 JTextArea personName = new JTextArea(person.getName());
                 personName.setEditable(false);
@@ -65,7 +65,6 @@ public class UnequalSplitPanel extends JPanel {
             }
 
         }
-
 
 
         addSubmitButtonActionListener();

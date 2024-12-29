@@ -29,21 +29,7 @@ public class TicketController implements Controller<Ticket> {
         this.ticketCustomIterator = ticketItorator;
     }
 
-    public void addSplitEqual(String ticketType , String ticketPriceEntered , String personPayedName){
-
-
-        //not optimal for speed but i tried seperating visual from this more with strings
-        Person personPayed = null;
-        while(personIterator.hasNext()) {
-            Person person = personIterator.getElement();
-            if (person.getName().equals(personPayedName)) {
-                personPayed = person;
-                personIterator.reset();
-                break;
-            }
-        }
-
-
+    public void addSplitEqual(String ticketType , String ticketPriceEntered , Person personPayed){
 
 
         if(ticketPriceEntered != null && ticketType != null && personPayed != null) {
@@ -57,18 +43,9 @@ public class TicketController implements Controller<Ticket> {
     }
 
 
-    public void addSplitUnequal(String ticketType , List<String> ticketPriceEntered , String personPayedName ){
+    public void addSplitUnequal(String ticketType , List<String> ticketPriceEntered , Person personPayed ){
 
-        //not optimal for speed but i tried seperating visual from this more with strings
-        Person personPayed = null;
-        while(personIterator.hasNext()) {
-            Person person = personIterator.getElement();
-            if (person.getName().equals(personPayedName)) {
-                personPayed = person;
-                personIterator.reset();
-                break;
-            }
-        }
+
 
         if(ticketPriceEntered.size() == personIterator.getLenght()-1) {
             Integer  otherIndex = 0 ;
@@ -90,7 +67,7 @@ public class TicketController implements Controller<Ticket> {
         HashMap<Person, Double> balances = new HashMap<>();
 
         while (ticketCustomIterator.hasNext()) {
-            Ticket ticket = (Ticket) ticketCustomIterator.getElement();
+            Ticket ticket = ticketCustomIterator.getElement();
 
             balances.put(ticket.getFrom(), balances.getOrDefault(ticket.getFrom(), 0.0) - ticket.getPrice());
             balances.put(ticket.getTo(), balances.getOrDefault(ticket.getTo(), 0.0) + ticket.getPrice());
@@ -99,7 +76,6 @@ public class TicketController implements Controller<Ticket> {
         while (true) {
 
 
-            //use pairs!!!!!
             double largest = 0;
             Person largestP = null;
 

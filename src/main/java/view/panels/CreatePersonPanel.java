@@ -11,8 +11,8 @@ import javax.swing.event.ListSelectionListener;
 import java.util.Objects;
 
 public class CreatePersonPanel extends JPanel {
-    private JList<String> createdPersonList;
-    private DefaultListModel<String> createdPersonListModel;
+    private JList<Person> createdPersonList;
+    private DefaultListModel<Person> createdPersonListModel;
 
     private JButton createPerson ;
     private JButton removePerson ;
@@ -78,14 +78,14 @@ public class CreatePersonPanel extends JPanel {
         });
     }
 
-    public void addPersonDisp(String personName){
-        createdPersonListModel.addElement(personName);
+    public void addPersonDisp(Person person){
+        createdPersonListModel.addElement(person);
     }
-    public void removePersonDisp(String personName){
-        createdPersonListModel.removeElement(personName);
+    public void removePersonDisp(Person person){
+        createdPersonListModel.removeElement(person);
     }
 
-    public String getSelectedPersonName(){
+    public Person getSelectedPerson(){
         return createdPersonList.getSelectedValue();
     }
     public Object[] getAllPersons(){

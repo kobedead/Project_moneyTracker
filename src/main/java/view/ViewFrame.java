@@ -72,12 +72,12 @@ public class ViewFrame extends JFrame implements PropertyChangeListener , ListSe
         //listen to PersonController entry added
         if ("PersonAdded".equals(evt.getPropertyName())) {
             //list person in create person panel
-            createPersonPanel.addPersonDisp((String) evt.getNewValue());
+            createPersonPanel.addPersonDisp((Person) evt.getNewValue());
 
         }
         else if ("PersonDeleted".equals(evt.getPropertyName())) {
             //delist person in create person panel
-            createPersonPanel.removePersonDisp((String) evt.getNewValue());
+            createPersonPanel.removePersonDisp((Person) evt.getNewValue());
 
 
         }
@@ -103,7 +103,7 @@ public class ViewFrame extends JFrame implements PropertyChangeListener , ListSe
     public void valueChanged(ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()) {
             System.out.println("Selected value updated");
-            createTicketPanel.setSelectedPerson(createPersonPanel.getSelectedPersonName());
+            createTicketPanel.setSelectedPerson(createPersonPanel.getSelectedPerson());
 
 
     }}

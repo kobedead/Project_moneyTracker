@@ -21,7 +21,7 @@ public class CreateTicketPanel extends JPanel {
     // Get your controller in this private field
     private TicketController ticketController;
 
-    private String selectedPersonName;
+    private Person selectedPerson;
     private CustomIterator personCustomIterator;
 
 
@@ -70,8 +70,8 @@ public class CreateTicketPanel extends JPanel {
     }
 
 
-    public void setSelectedPerson(String personName){
-        selectedPersonName = personName;
+    public void setSelectedPerson(Person personName){
+        selectedPerson = personName;
 
     }
 
@@ -82,8 +82,7 @@ public class CreateTicketPanel extends JPanel {
     {
         this.SplitEqual.addActionListener(listener ->
         {
-                System.out.println(selectedPersonName);
-                ticketController.addSplitEqual(possibleTickets.getSelectedValue()  , ticketPrice.getText() , selectedPersonName );
+                ticketController.addSplitEqual(possibleTickets.getSelectedValue()  , ticketPrice.getText() , selectedPerson );
 
         });
     }
@@ -96,11 +95,11 @@ public class CreateTicketPanel extends JPanel {
             prices = new ArrayList<>();
 
             //if person and ticketType selected -> create new panel
-            if(selectedPersonName != null && possibleTickets.getSelectedValue() != null) {
+            if(selectedPerson != null && possibleTickets.getSelectedValue() != null) {
                 //create new frame
                 UnequalPayFrame unequalPayFrame1 = new UnequalPayFrame();
                 //pass prices as refrence so it can get updated
-                unequalPayFrame1.Init(selectedPersonName, personCustomIterator, prices);
+                unequalPayFrame1.Init(selectedPerson, personCustomIterator, prices);
 
                 // Add a window listener
                 unequalPayFrame1.addWindowListener(new WindowAdapter() {
@@ -108,14 +107,14 @@ public class CreateTicketPanel extends JPanel {
                     //for window disposed with button
                     @Override
                     public void windowClosed(WindowEvent e) {
-                        ticketController.addSplitUnequal(possibleTickets.getSelectedValue(), prices, selectedPersonName);
+                        ticketController.addSplitUnequal(possibleTickets.getSelectedValue(), prices, selectedPerson);
 
                     }
 
                     //for window closed on x
                     @Override
                     public void windowClosing(WindowEvent e) {
-                        ticketController.addSplitUnequal(possibleTickets.getSelectedValue(), prices, selectedPersonName);
+                        ticketController.addSplitUnequal(possibleTickets.getSelectedValue(), prices, selectedPerson);
 
                     }
 

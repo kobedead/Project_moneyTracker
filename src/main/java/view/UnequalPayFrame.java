@@ -22,7 +22,7 @@ public class UnequalPayFrame extends JFrame {
     }
 
 
-    public void Init(String selected , CustomIterator personIterator, List<String> prices ){
+    public void Init(Person selected , CustomIterator personIterator, List<String> prices ){
         this.setSize(400, 400);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
