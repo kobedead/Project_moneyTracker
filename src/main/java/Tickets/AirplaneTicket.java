@@ -11,9 +11,8 @@ public class AirplaneTicket extends Ticket {
     }
 
     @Override
-    public String toString() {
-        return String.format(
-                "AirplaneTicket , price : %.2f  from  %s  to %s" , price , from , to);
+    public String ticketDisc() {
+        return "AirplaneTicket";
     }
 
 

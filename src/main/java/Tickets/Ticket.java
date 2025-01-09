@@ -29,10 +29,10 @@ public abstract class Ticket {
 
 
     @Override
-    public abstract String toString();
+    public  String toString(){
+        return String.format( ticketDisc() +  " price : " + price + " , from  : " + from  + " , to  : "+to );
+    }
 
-
-
-
+    public abstract String ticketDisc();
 
 }
