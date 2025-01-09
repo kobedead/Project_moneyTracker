@@ -26,15 +26,14 @@ public class Main {
         CustomIterator<Ticket> ticketCustomIterator = ticketDB.createIterator();
 
 
-        PersonController personCon = new PersonController( personDB, personCustomIterator );
+        PersonController personCon = new PersonController( personDB, personCustomIterator , ticketCustomIterator );
 
         TicketController ticketCon = new TicketController(ticketDB, factory , personCustomIterator , ticketCustomIterator);
 
 
 
 
-        ViewFrame view = new ViewFrame();
-        view.initialize(personCon , ticketCon , factory.getKindsOfTickets());
+        ViewFrame view = new ViewFrame(personCon , ticketCon , factory.getKindsOfTickets());
 
 
         personDB.addObserver(view);

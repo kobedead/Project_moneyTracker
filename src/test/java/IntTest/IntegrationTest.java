@@ -19,6 +19,7 @@ import org.testng.annotations.Test;
 
 import javax.xml.crypto.Data;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
@@ -74,7 +75,7 @@ public class IntegrationTest {
         TicketFactory tFactory = new TicketFactory();
 
         //create controllers
-        PersonController pController = new PersonController(pdb , pdbIterator);
+        PersonController pController = new PersonController(pdb , pdbIterator , tdbIterator);
         TicketController tController = new TicketController(tdb , tFactory , pdbIterator , tdbIterator);
 
 
@@ -122,11 +123,13 @@ public class IntegrationTest {
         //select a Ticket
         String selectedTicketType = "Airplane";
         //select a person that has payed
-        String selectedPerson = "An";
+        String selectedPersonName = "An";
+
+
         //enter amount (equalSplit)
         String amountTextField = "90.0";                             //(30 , 30 , 30 )
         //select equalSplit :
-        tController.addSplitEqual(selectedTicketType , amountTextField , selectedPerson);
+        tController.addSplitEqualByName(selectedTicketType , amountTextField , selectedPersonName);
 
 
 
@@ -136,13 +139,13 @@ public class IntegrationTest {
         //select a Ticket
         selectedTicketType = "Cinema";
         //select a person that has payed
-        selectedPerson = "Jan";
+        selectedPersonName = "Jan";
         //enter amount (equalSplit)
         List<String> amountTextFields = new ArrayList<>();
         amountTextFields.add("20");
         amountTextFields.add("50");
         //select equalSplit :
-        tController.addSplitUnequal(selectedTicketType , amountTextFields , selectedPerson);
+        tController.addSplitUnequalByName(selectedTicketType , amountTextFields , selectedPersonName);
 
 
         //ticket3       equalsplit (Jef paid (10 ,10 ,10))         (2*ticket)
@@ -150,11 +153,11 @@ public class IntegrationTest {
         //select a Ticket
         selectedTicketType = "Cinema";
         //select a person that has payed
-        selectedPerson = "Jan";
+        selectedPersonName = "Jan";
         //enter amount (equalSplit)
         amountTextField = "30.0";
         //select equalSplit :
-        tController.addSplitEqual(selectedTicketType , amountTextField , selectedPerson);
+        tController.addSplitEqualByName(selectedTicketType , amountTextField , selectedPersonName);
 
 
 
@@ -179,13 +182,24 @@ public class IntegrationTest {
 
 
         //check :
+        //manual calculated
+        List<Double> correctEndPrice = Arrays.asList(60.0, 30.0);
 
+        //to calculate from program
+        List<Double> calculatedPrice = new ArrayList<>();
 
+        //calculate
         List<Ticket> finaltickets = tController.CalculateTotal();
-        //chekc with tests
-        System.out.println(finaltickets);
+        //prices
+        for(Ticket ticket : finaltickets){
+            calculatedPrice.add(ticket.getPrice());
+        }
 
-        //its right
+
+        //check with tests
+        Assert.assertEquals("bad calculated" , correctEndPrice , calculatedPrice);
+
+
 
 
 

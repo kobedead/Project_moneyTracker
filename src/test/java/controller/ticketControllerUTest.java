@@ -1,7 +1,5 @@
 package controller;
 
-import Controllers.Controller;
-import Controllers.PersonController;
 import Controllers.TicketController;
 import Databases.Database;
 import Factory.TicketFactory;
@@ -48,7 +46,7 @@ public class ticketControllerUTest {
         TicketFactory ticketFactory = Mockito.mock(TicketFactory.class);
 
 
-        Controller<Ticket> controllerUnderTest = new TicketController(mock_db , ticketFactory , mock_personIterator , mock_ticketIterator);
+        TicketController controllerUnderTest = new TicketController(mock_db , ticketFactory , mock_personIterator , mock_ticketIterator);
         //call add
         controllerUnderTest.add(mock_ticket);
         //check if add got only called once
@@ -69,7 +67,7 @@ public class ticketControllerUTest {
         TicketFactory ticketFactory = Mockito.mock(TicketFactory.class);
 
 
-        Controller<Ticket> controllerUnderTest = new TicketController(mock_db , ticketFactory , mock_personIterator , mock_ticketIterator);
+        TicketController controllerUnderTest = new TicketController(mock_db , ticketFactory , mock_personIterator , mock_ticketIterator);
         //call add
         controllerUnderTest.remove(mock_ticket);
         //check if add got only called once

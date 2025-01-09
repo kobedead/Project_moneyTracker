@@ -1,20 +1,22 @@
 package Controllers;
 
 import Databases.Database;
-import Databases.PersonDatabase;
 import Iterator.CustomIterator;
-import Iterator.PersonDBIterator;
 import Person.Person;
+import Tickets.Ticket;
 
-public class PersonController implements Controller<Person> {
+public class PersonController {
 
     protected Database<Person> db ;
     protected CustomIterator<Person> personIterator;
 
-    public PersonController(Database<Person> database , CustomIterator<Person> personIterator){
+    protected CustomIterator<Ticket> ticketCustomIterator;
+
+    public PersonController(Database<Person> database , CustomIterator<Person> personIterator , CustomIterator<Ticket> ticketCustomIterator){
 
         db = database;
         this.personIterator = personIterator;
+        this.ticketCustomIterator = ticketCustomIterator;
     }
 
 
@@ -23,7 +25,7 @@ public class PersonController implements Controller<Person> {
     }
 
 
-    public void addByName(String name){
+    public boolean addByName(String name){
 
         Boolean alreadyIn = false ;
         while (personIterator.hasNext()) {
@@ -36,16 +38,26 @@ public class PersonController implements Controller<Person> {
         if(!alreadyIn)
             db.add(new Person(name));
 
+    return alreadyIn;
     }
 
-    @Override
+
     public void add(Person object) {
         db.add(object);
     }
 
-    @Override
-    public void remove(Person person) {
+
+    public boolean remove(Person person) {
+
+        while(ticketCustomIterator.hasNext()){
+            Ticket ticket =  ticketCustomIterator.getElement();
+            if(ticket.getTo() == person || ticket.getFrom() == person ){
+                return false;
+            }
+        }
+
         db.remove(person);
+        return true;
     }
 
 

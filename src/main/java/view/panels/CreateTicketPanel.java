@@ -1,130 +1,173 @@
 package view.panels;
 
 import Controllers.TicketController;
-import Factory.TicketFactory;
-import Iterator.CustomIterator;
 import Person.Person;
 import Tickets.Ticket;
-import view.UnequalPayFrame;
+import view.NavigationListener;
 
 import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CreateTicketPanel extends JPanel {
+    private JButton addTicketButton;
+    private JButton removeTicketButton;
+    private JCheckBox unequalPay;
 
-    private JButton SplitEqual;
-    private JButton SplitDiff;
-
-    // Get your controller in this private field
     private TicketController ticketController;
+    private NavigationListener navigationListener;
 
     private Person selectedPerson;
-    private CustomIterator personCustomIterator;
-
-
-    private JTextField ticketPrice;
-
-    private JList<String> possibleTickets;
-    private DefaultListModel<String> possibleTicketsModel;
-
-    private List<String> prices;
-
-    // Get your controller in this class via the constructor
-    public CreateTicketPanel(TicketController ticketController, List<String> kindOfTickets , CustomIterator personCustomIterator)
-    {
-        this.ticketController = ticketController ;
-        JLabel label = new JLabel("Registration buttons");
-        this.SplitEqual = new JButton("EqSplit");
-        this.SplitDiff = new JButton("UnevenSplit");
-
-        possibleTicketsModel = new DefaultListModel<>();
-        possibleTickets = new JList<>(possibleTicketsModel);
-
-        //list of possible tickets
-        for(String ticketKinds :kindOfTickets)
-            possibleTicketsModel.addElement(ticketKinds);
 
 
 
+    private JComboBox<String> typeDropdown;
+
+    private JList<Ticket> ticketList;
+    private DefaultListModel<Ticket> ticketListModel;
+    private JList<Person> createdPersonList;
+    private static DefaultListModel<Person> createdPersonListModel;
+
+    public CreateTicketPanel(TicketController ticketController, List<String> kinfOfTickets, NavigationListener navigationListener) {
+        this.ticketController = ticketController;
+        this.navigationListener = navigationListener;
+
+        JLabel label = new JLabel("Choose Ticket Type");
+        this.addTicketButton = new JButton("Add Ticket");
+        this.removeTicketButton = new JButton("Remove Ticket");
+        this.unequalPay = new JCheckBox("Unequal Pay");
+
+        // Initialize ticket list
+        ticketListModel = new DefaultListModel<>();
+        ticketList = new JList<>(ticketListModel);
+        JScrollPane ticketScrollPane = new JScrollPane(ticketList);
+        ticketScrollPane.setPreferredSize(new Dimension(300, 150));
 
 
-        ticketPrice = new JTextField(10);
+        typeDropdown = new JComboBox<>();
+        for (String ticket : kinfOfTickets) {
+            typeDropdown.addItem(ticket);
+        }
 
-        this.personCustomIterator = personCustomIterator;
+        createdPersonListModel = new DefaultListModel<>();
+        createdPersonList = new JList<>(createdPersonListModel);
+        JScrollPane personScrollPane = new JScrollPane(createdPersonList);
+        personScrollPane.setPreferredSize(new Dimension(300, 150));
 
-        addSplitEqualButtonActionListener();
-        addSplitDiffButtonActionListener();
 
+
+        // Add action listeners
+        addTicketButtonActionListener();
+        addRemoveTicketButtonActionListener();
+
+        // Panel layout
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+        // Add components
         this.add(label);
-        this.add(possibleTickets);
-        this.add(ticketPrice);
-        this.add(this.SplitEqual);
-        this.add(this.SplitDiff);
-
-
+        this.add(typeDropdown);
+        this.add(ticketScrollPane);
+        this.add(personScrollPane);
+        this.add(addTicketButton);
+        this.add(removeTicketButton);
+        this.add(unequalPay);
+        this.add(createBackButtonPanel());
     }
 
 
-    public void setSelectedPerson(Person personName){
-        selectedPerson = personName;
+    public void setSelectedPerson(Person person){
+        this.selectedPerson = person;
 
     }
 
-
-
-
-    public void addSplitEqualButtonActionListener()
-    {
-        this.SplitEqual.addActionListener(listener ->
-        {
-                ticketController.addSplitEqual(possibleTickets.getSelectedValue()  , ticketPrice.getText() , selectedPerson );
-
-        });
+    public void addTicketDisp(Ticket ticket) {
+        ticketListModel.addElement(ticket);
     }
 
-    public void addSplitDiffButtonActionListener()
-    {
-        this.SplitDiff.addActionListener(listener ->
-        {
+    public void removeTicketDisp(Ticket ticket) {
+        ticketListModel.removeElement(ticket);
+    }
 
-            prices = new ArrayList<>();
+    public static void addPersonDisp(Person person) {
+        createdPersonListModel.addElement(person);
+    }
 
-            //if person and ticketType selected -> create new panel
-            if(selectedPerson != null && possibleTickets.getSelectedValue() != null) {
-                //create new frame
-                UnequalPayFrame unequalPayFrame1 = new UnequalPayFrame();
-                //pass prices as refrence so it can get updated
-                unequalPayFrame1.Init(selectedPerson, personCustomIterator, prices);
+    public static void removePersonDisp(Person person) {
+        createdPersonListModel.removeElement(person);
+    }
 
-                // Add a window listener
-                unequalPayFrame1.addWindowListener(new WindowAdapter() {
 
-                    //for window disposed with button
-                    @Override
-                    public void windowClosed(WindowEvent e) {
-                        ticketController.addSplitUnequal(possibleTickets.getSelectedValue(), prices, selectedPerson);
+    public void addTicketButtonActionListener() {
+        this.addTicketButton.addActionListener(listener -> {
+            selectedPerson = createdPersonList.getSelectedValue();
+            String ticketType = (String) typeDropdown.getSelectedItem();
 
+            if (ticketType == null || selectedPerson == null) {
+                JOptionPane.showMessageDialog(this, "Please select a ticket type and a person.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (!unequalPay.isSelected()) {
+                // Split Equally Logic
+                String ticketPriceEntered = JOptionPane.showInputDialog("Enter Ticket Price");
+                if (ticketPriceEntered == null) {
+                    JOptionPane.showMessageDialog(this, "Please enter a valid ticket price.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                try {
+                    ticketController.addSplitEqual(ticketType, ticketPriceEntered, selectedPerson);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this, "Invalid price. Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                // Unequal Pay Logic
+                ArrayList<String> prices = new ArrayList<>();
+                for (int i = 0; i < createdPersonListModel.size(); i++) {
+                    Person person = createdPersonListModel.get(i);
+                    if (person.equals(selectedPerson)) continue;
+
+                    String price = JOptionPane.showInputDialog("Enter Ticket Price for " + person.getName());
+                    if (price == null) {
+                        JOptionPane.showMessageDialog(this, "Please enter valid prices for all persons.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
                     }
+                    prices.add(price);
+                }
 
-                    //for window closed on x
-                    @Override
-                    public void windowClosing(WindowEvent e) {
-                        ticketController.addSplitUnequal(possibleTickets.getSelectedValue(), prices, selectedPerson);
+                if (prices.size() != createdPersonListModel.size() - 1) {
+                    JOptionPane.showMessageDialog(this, "Please enter prices for all participants except the selected person.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
-                    }
-
-
-                });
+                try {
+                    ticketController.addSplitUnequal(ticketType, prices, selectedPerson);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this, "Invalid price. Please enter valid numbers.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }
 
+    public void addRemoveTicketButtonActionListener() {
+        this.removeTicketButton.addActionListener(listener -> {
+            Ticket selectedValue = ticketList.getSelectedValue();
+            if (selectedValue == null) {
+                JOptionPane.showMessageDialog(this, "No Ticket selected", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
+            ticketController.remove(selectedValue);
+        });
+    }
+
+    private JPanel createBackButtonPanel() {
+        JPanel backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JButton backButton = new JButton("Back to Menu");
+        backButton.addActionListener(e -> navigationListener.switchPanel("Menu"));
+        backPanel.add(backButton);
+        return backPanel;
+    }
 
 
 

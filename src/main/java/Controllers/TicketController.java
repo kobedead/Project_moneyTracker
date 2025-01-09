@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class TicketController implements Controller<Ticket> {
+public class TicketController {
 
     protected Database<Ticket> ticketDatabase ;
     protected CustomIterator<Person> personIterator;
@@ -45,10 +45,8 @@ public class TicketController implements Controller<Ticket> {
 
     public void addSplitUnequal(String ticketType , List<String> ticketPriceEntered , Person personPayed ){
 
-
-
         if(ticketPriceEntered.size() == personIterator.getLenght()-1) {
-            Integer  otherIndex = 0 ;
+            int otherIndex = 0 ;
             while(personIterator.hasNext()){
                 Person person = personIterator.getElement();
                 if (person != personPayed) {
@@ -109,6 +107,14 @@ public class TicketController implements Controller<Ticket> {
     }
 
 
+
+
+
+
+
+
+
+
     public void add( Ticket ticket){
         ticketDatabase.add(ticket);
     }
@@ -116,6 +122,47 @@ public class TicketController implements Controller<Ticket> {
     public void remove(Ticket ticket){
         ticketDatabase.remove(ticket);
     }
+
+
+
+
+    public void addSplitEqualByName(String ticketType , String ticketPriceEntered , String personPayedName){
+
+
+        Person personPayed = null;
+        while(personIterator.hasNext()){
+            Person person = personIterator.getElement();
+            if(person.getName().equals(personPayedName)) {
+                personPayed = person;
+                personIterator.reset();
+                break;
+            }
+        }
+
+        addSplitEqual(ticketType , ticketPriceEntered , personPayed);
+    }
+
+
+    public void addSplitUnequalByName(String ticketType , List<String> ticketPriceEntered , String personPayedName ){
+
+        Person personPayed = null;
+        while(personIterator.hasNext()){
+            Person person = personIterator.getElement();
+            if(person.getName().equals(personPayedName)){
+                personPayed = person;
+                personIterator.reset();
+                break;
+            }
+        }
+
+        addSplitUnequal(ticketType , ticketPriceEntered, personPayed);
+
+    }
+
+
+
+
+
 
 
 }

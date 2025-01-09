@@ -1,90 +1,82 @@
 package view.panels;
 
-
 import Controllers.TicketController;
 import Tickets.Ticket;
+import view.NavigationListener;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class DisplayTicketsPanel extends JPanel {
 
     private TicketController ticketController ;
+    private NavigationListener navigationListener;
 
     private JList<Ticket> entryJList;
     private DefaultListModel<Ticket> entryListModel;
+    private JList<Ticket> calcTotalList;
+    private DefaultListModel<Ticket> calcTotalListModel;
 
-    private JList<Ticket> total ;
-
-    private DefaultListModel<Ticket> totalModel;
-
-
-
-    private JButton removeButton;
     private JButton calcTotal;
-    JScrollPane pane ;
 
-    public DisplayTicketsPanel(TicketController ticketController)
+    JScrollPane ticketPane, billPane ;
+
+    public DisplayTicketsPanel(TicketController ticketController, NavigationListener navigationListener)
     {
-        JLabel label = new JLabel("Registrations");
+        JLabel label = new JLabel("Tickets");
+        JLabel label2 = new JLabel("Total Bill");
         entryListModel = new DefaultListModel<>();
         entryJList = new JList<>(entryListModel);
 
-        totalModel = new DefaultListModel<>();
-        total = new JList<>(totalModel);
+        calcTotalListModel = new DefaultListModel<>();
+        calcTotalList = new JList<>(calcTotalListModel);
 
-
-
-
-        removeButton = new JButton("Delete") ;
         calcTotal = new JButton("CalcTotal");
 
 
-        addRemoveButtonActionListener();
         addCalcTotalActionListener();
 
         this.ticketController = ticketController;
+        this.navigationListener = navigationListener;
 
-        pane = new JScrollPane(entryJList);
+        ticketPane = new JScrollPane(entryJList);
+        billPane = new JScrollPane(calcTotalList);
 
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.add(label);
-        this.add(entryJList);
-        this.add(removeButton);
+        this.add(ticketPane);
         this.add(calcTotal);
-        this.add(total);
+        this.add(label2);
+        this.add(billPane);
+        this.add(createBackButtonPanel());
 
     }
 
-    public void addTicket(Ticket entry)
-    {
-        this.entryListModel.addElement(entry);
+    public void addTicketDisp(Ticket ticket) {
+        entryListModel.addElement(ticket);
     }
 
-    public void removeTicket(Ticket ticket){
-        this.entryListModel.removeElement(ticket);}
-
-
-
-    public void addRemoveButtonActionListener()
-    {
-        this.removeButton.addActionListener(listener ->
-        {
-            ticketController.remove(entryJList.getSelectedValue());
-
-        });
+    public void removeTicketDisp(Ticket ticket) {
+        entryListModel.removeElement(ticket);
     }
+
 
     public void addCalcTotalActionListener()
     {
         this.calcTotal.addActionListener(listener ->
         {
-            totalModel.removeAllElements();
-            for(Ticket ticket :ticketController.CalculateTotal() )
-                totalModel.addElement(ticket);
-
-        });
+            calcTotalListModel.clear();
+            calcTotalListModel.addAll(ticketController.CalculateTotal());
+               });
     }
 
+    private JPanel createBackButtonPanel() {
+        JPanel backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JButton backButton = new JButton("Back to Menu");
+        backButton.addActionListener(e -> navigationListener.switchPanel("Menu"));
+        backPanel.add(backButton);
+        return backPanel;
+    }
 }
