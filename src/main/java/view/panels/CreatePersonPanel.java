@@ -58,7 +58,7 @@ public class CreatePersonPanel extends JPanel {
             }
 
             // Add the new person to the database, check if duplicate
-            if (personController.addByName(name)){
+            if (personController.addByName(name)) {
                 JOptionPane.showMessageDialog(this, "Person already exists", "Error", JOptionPane.ERROR_MESSAGE);
 
             }

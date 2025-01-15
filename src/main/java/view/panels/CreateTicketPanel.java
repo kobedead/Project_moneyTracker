@@ -76,10 +76,6 @@ public class CreateTicketPanel extends JPanel {
     }
 
 
-    public void setSelectedPerson(Person person){
-        this.selectedPerson = person;
-
-    }
 
     public void addTicketDisp(Ticket ticket) {
         ticketListModel.addElement(ticket);

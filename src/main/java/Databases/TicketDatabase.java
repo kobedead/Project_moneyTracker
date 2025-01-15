@@ -37,55 +37,6 @@ public class TicketDatabase extends Database<Ticket>{
 
 
 
-    public List<Ticket> CalculateTotal(){
-
-        List<Ticket> finalpay = new ArrayList<>();
-        HashMap<Person, Double> balances = new HashMap<>();
-
-        for (Ticket ticket : ticketList){
-            balances.put(ticket.getFrom(), balances.getOrDefault(ticket.getFrom() , 0.0) -ticket.getPrice() );
-            balances.put(ticket.getTo() , balances.getOrDefault(ticket.getTo() , 0.0) + ticket.getPrice());
-        }
-
-        while(true) {
-
-
-            //use pairs!!!!!
-            double largest = 0;
-            Person largestP = null;
-
-            double smallest = 0 ;
-            Person smallestP = null ;
-
-            for (Person person : balances.keySet()) {
-
-                if(balances.get(person)>largest){
-                    largestP = person;
-                    largest = balances.get(person);
-                }
-                else if(balances.get(person)< smallest){
-                    smallestP = person;
-                    smallest = balances.get(person);
-                }
-            }
-
-            if(smallest == 0 )
-                return finalpay;
-
-
-            double payment  = Math.min(Math.abs(smallest) , largest);
-            finalpay.add(new FinalTicket(payment , smallestP , largestP));
-
-            balances.put(largestP , balances.get(largestP) - payment);
-            balances.put(smallestP , balances.get(smallestP) + payment);
-
-
-
-        }
-
-    }
-
-
 
 
 

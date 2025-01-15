@@ -51,7 +51,9 @@ public class PersonController {
 
         while(ticketCustomIterator.hasNext()){
             Ticket ticket =  ticketCustomIterator.getElement();
-            if(ticket.getTo() == person || ticket.getFrom() == person ){
+
+            if((ticket.getTo() == person) || (ticket.getFrom() == person )){
+                ticketCustomIterator.reset();
                 return false;
             }
         }

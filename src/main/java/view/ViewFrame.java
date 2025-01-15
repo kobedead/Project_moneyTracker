@@ -14,7 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-public class ViewFrame extends JFrame implements NavigationListener, PropertyChangeListener, ListSelectionListener {
+public class ViewFrame extends JFrame implements NavigationListener, PropertyChangeListener {
 
 
     private JPanel cardPanel; // The main panel for CardLayout
@@ -29,7 +29,7 @@ public class ViewFrame extends JFrame implements NavigationListener, PropertyCha
 
 
         this.setSize(700, 400);
-        this.setLocation(1000, 500);
+        this.setLocation(500, 200);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Initialize CardLayout
@@ -79,14 +79,5 @@ public class ViewFrame extends JFrame implements NavigationListener, PropertyCha
         }
     }
 
-    @Override
-    public void valueChanged(ListSelectionEvent e) {
-        if (!e.getValueIsAdjusting()) {
-            JList<?> source = (JList<?>) e.getSource();
-            Object selected = source.getSelectedValue();
-            if (selected instanceof Person) {
-                createTicketPanel.setSelectedPerson((Person) selected);
-            }
-        }
-    }
+
 }

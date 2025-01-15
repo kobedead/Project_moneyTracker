@@ -16,16 +16,11 @@ public abstract class Database<T>
     public final PropertyChangeSupport support;
 
 
-
-
-
     protected Database()
     {
         support = new PropertyChangeSupport(this);
 
     }
-
-
 
     //double-checked locking for multithreading safety
     public static <T extends Database<?>> T getInstance(Class<T> specDatabase) {
