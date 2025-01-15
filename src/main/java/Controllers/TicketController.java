@@ -61,14 +61,16 @@ public class TicketController {
 
 
     public List<Ticket> CalculateTotal() {
+
         List<Ticket> finalpay = new ArrayList<>();
         HashMap<Person, Double> balances = new HashMap<>();
 
         while (ticketCustomIterator.hasNext()) {
             Ticket ticket = ticketCustomIterator.getElement();
 
-            balances.put(ticket.getFrom(), balances.getOrDefault(ticket.getFrom(), 0.0) - ticket.getPrice());
-            balances.put(ticket.getTo(), balances.getOrDefault(ticket.getTo(), 0.0) + ticket.getPrice());
+
+            balances.put(ticket.getFrom(), (balances.getOrDefault(ticket.getFrom(), 0.0) - ticket.getPrice()));
+            balances.put(ticket.getTo(), (balances.getOrDefault(ticket.getTo(), 0.0) + ticket.getPrice()));
         }
 
         while (true) {
@@ -82,16 +84,18 @@ public class TicketController {
 
             for (Person person : balances.keySet()) {
 
+
+
                 if (balances.get(person) > largest) {
                     largestP = person;
-                    largest = balances.get(person);
+                    largest = (balances.get(person));
                 } else if (balances.get(person) < smallest) {
                     smallestP = person;
-                    smallest = balances.get(person);
+                    smallest = (balances.get(person));
                 }
             }
 
-            if (smallest == 0) {
+            if (-0.01 < smallest && smallest < 0.01 ) {
                 if (largest != 0)
                     System.out.println("bad calculatetotal logic");
                 return finalpay;
@@ -99,6 +103,9 @@ public class TicketController {
 
             double payment = Math.min(Math.abs(smallest), largest);
             finalpay.add(new FinalTicket(payment, smallestP, largestP));
+
+
+
 
             balances.put(largestP, balances.get(largestP) - payment);
             balances.put(smallestP, balances.get(smallestP) + payment);

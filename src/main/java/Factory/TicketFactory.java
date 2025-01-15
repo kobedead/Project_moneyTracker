@@ -15,7 +15,7 @@ public class TicketFactory {
 
     public TicketFactory(){
 
-        kindsOfTickets = Arrays.asList("Airplane" , "Cinema" ,  "StoreTicket"  ) ;
+        kindsOfTickets = Arrays.asList("Airplane" , "Cinema" ,  "StoreTicket" , "RestaurantTicket" ) ;
 
     }
 
@@ -30,6 +30,8 @@ public class TicketFactory {
             return new CinemaTicket(price,from ,to);
         else if (Objects.equals(ticketKind, kindsOfTickets.get(2)))
             return new StoreTicket(price,from ,to);
+        else if (Objects.equals(ticketKind, kindsOfTickets.get(3)))
+            return new RestaurantTicket(price,from ,to);
         else{
             System.out.println("faulty ticketType");
             return null ;

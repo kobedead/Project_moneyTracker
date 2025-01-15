@@ -30,7 +30,7 @@ public abstract class Ticket {
 
     @Override
     public  String toString(){
-        return String.format( ticketDisc() +  " price : " + price + " , from  : " + from  + " , to  : "+to );
+        return String.format( ticketDisc() + " ,  Price : %.2f  from  %s  to %s" , price , from.getName() , to.getName() );
     }
 
     public abstract String ticketDisc();
