@@ -29,7 +29,7 @@ public class PersonController {
 
         Boolean alreadyIn = false ;
         while (personIterator.hasNext()) {
-            if(personIterator.getElement().getName().equals(name)){
+            if(personIterator.getElement().getName().toLowerCase().equals(name)){
                 System.out.println("Error :  person is already in database");
                 alreadyIn = true;
             }
